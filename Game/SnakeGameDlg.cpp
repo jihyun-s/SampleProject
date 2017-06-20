@@ -14,6 +14,7 @@ IMPLEMENT_DYNAMIC(CSnakeGameDlg, CDialogEx)
 CSnakeGameDlg::CSnakeGameDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(IDD_GAME_SNAKE, pParent)
 {
+	//[2017.06.20][kysha91]Test
 }
 
 CSnakeGameDlg::~CSnakeGameDlg()
