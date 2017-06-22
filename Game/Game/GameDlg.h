@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "Snake/SnakeGameDlg.h"
 
 // CGameDlg 대화 상자
 class CGameDlg : public CDialogEx
@@ -11,6 +12,7 @@ class CGameDlg : public CDialogEx
 // 생성입니다.
 public:
 	CGameDlg(CWnd* pParent = NULL);	// 표준 생성자입니다.
+	~CGameDlg();
 
 // 대화 상자 데이터입니다.
 	enum { IDD = IDD_GAME_DIALOG };
@@ -29,4 +31,8 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedButton1();
+protected:
+	CSnakeGameDlg *m_pSnakeGameDlg;
 };

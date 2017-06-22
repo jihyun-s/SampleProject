@@ -51,8 +51,14 @@ CGameDlg::CGameDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CGameDlg::IDD, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-}
 
+	m_pSnakeGameDlg = NULL;
+}
+CGameDlg::~CGameDlg()
+{
+	if (m_pSnakeGameDlg)
+		delete m_pSnakeGameDlg;
+}
 void CGameDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -62,6 +68,7 @@ BEGIN_MESSAGE_MAP(CGameDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON1, &CGameDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -150,3 +157,16 @@ HCURSOR CGameDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CGameDlg::OnBnClickedButton1()	//Snake Gaem
+{	
+	if (!m_pSnakeGameDlg)
+	{
+		m_pSnakeGameDlg = new CSnakeGameDlg(this);
+		m_pSnakeGameDlg->Create(CSnakeGameDlg::IDD, this);
+	}
+	m_pSnakeGameDlg->ShowWindow(SW_SHOW);
+
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
