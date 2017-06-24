@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\SnakeSource">
+      <UniqueIdentifier>{e04c6ae3-49b7-4d90-8266-138d3aaaca65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\SnakeHeader">
+      <UniqueIdentifier>{f5ea50cb-8183-404a-93af-139dd93bd43b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -43,16 +49,16 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Snake\Snake.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Snake\SnakeGame.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\SnakeHeader</Filter>
     </ClInclude>
     <ClInclude Include="Snake\SnakeGameController.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\SnakeHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Snake\SnakeGame.h">
+      <Filter>헤더 파일\SnakeHeader</Filter>
     </ClInclude>
     <ClInclude Include="Snake\SnakeGameDlg.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\SnakeHeader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -75,16 +81,16 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Snake\Snake.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\SnakeSource</Filter>
     </ClCompile>
     <ClCompile Include="Snake\SnakeGame.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\SnakeSource</Filter>
     </ClCompile>
     <ClCompile Include="Snake\SnakeGameController.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\SnakeSource</Filter>
     </ClCompile>
     <ClCompile Include="Snake\SnakeGameDlg.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\SnakeSource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
