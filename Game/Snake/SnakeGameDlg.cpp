@@ -1,7 +1,7 @@
 // SnakeGameDlg.cpp : 구현 파일입니다.
 //
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "../Game.h"
 #include "SnakeGameDlg.h"
 #include "afxdialogex.h"
