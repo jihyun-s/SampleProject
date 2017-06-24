@@ -15,9 +15,11 @@ public:
 	enum { IDD = IDD_GAME_SNAKE };
 
 protected:
+	CListBox m_listmsg;
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
-
+	virtual BOOL OnInitDialog();
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();
+	
 };
