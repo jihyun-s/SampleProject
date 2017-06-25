@@ -63,6 +63,9 @@
     <ClInclude Include="Snake\SnakeGameDlg.h">
       <Filter>헤더 파일\SnakeGame</Filter>
     </ClInclude>
+    <ClInclude Include="Snake\COMMON_TYPES.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">

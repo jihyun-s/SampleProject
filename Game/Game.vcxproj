@@ -106,6 +106,7 @@
     <ClInclude Include="GameDlg.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Snake\Apple.h" />
+    <ClInclude Include="Snake\COMMON_TYPES.h" />
     <ClInclude Include="Snake\Map.h" />
     <ClInclude Include="Snake\Snake.h" />
     <ClInclude Include="Snake\SnakeGame.h" />
