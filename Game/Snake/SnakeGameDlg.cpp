@@ -94,10 +94,9 @@ void CSnakeGameDlg::OnBnClickedExit()
 	TraceListbox(&m_listmsg, L"[%d]Snake Game 종료 시작", __LINE__);
 
 	KillTimer(SNAKE_GAME_TIMER);
-
 	TraceListbox(&m_listmsg, L"[%d]Snake Game 타이머 종료", __LINE__);
 	// To do : dialog 종료 코드
-
+	CDialogEx::OnCancel();
 }
 
 
@@ -105,12 +104,9 @@ void CSnakeGameDlg::OnBnClickedBtnRestart()
 {
 	TraceListbox(&m_listmsg, L"[%d]Snake Game 재시작", __LINE__);
 	KillTimer(SNAKE_GAME_TIMER);
-
 	TraceListbox(&m_listmsg, L"[%d]Snake Game 타이머 종료", __LINE__);
 
-
 	SetTimer(SNAKE_GAME_TIMER, 10000, NULL); // timer 
-
 	TraceListbox(&m_listmsg, L"[%d]Snake Game 타이머 생성", __LINE__);
 
 
