@@ -68,8 +68,8 @@ void CSnakeGameDlg::OnTimer(UINT nIDEvent)
 	{
 	case SNAKE_GAME_TIMER:
 	{
-		if (pSnakeGame->SnakeCanGo)
-			pSnakeGame->MoveStraight;
+		//if (pSnakeGame->SnakeCanGo())
+		//	pSnakeGame->MoveStraight();
 		//else 게임 종료
 	}
 		break;

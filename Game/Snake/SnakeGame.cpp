@@ -18,7 +18,7 @@ SnakeGame::~SnakeGame()
 
 bool SnakeGame::SnakeCanGo()
 {
-	bool bResult;
+	bool bResult = true;
 	// condition
 	// 1. 벽에 충돌 x
 	// 2. 뱀에 충돌 x 
