@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <algorithm>
 #include "COMMON_TYPES.h" //추후 윗단에서 인클루드 할 경우 제거예정
 using namespace std;
 

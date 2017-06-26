@@ -20,15 +20,15 @@ int Apple::GetSize()
 	return vApple.size();
 }
 
-Point Apple::MakeApplePosition(int MAX)
+Point Apple::MakeApplePosition(int MAX_X, int MAX_Y)
 {
-	int nX = rand() % (MAX); // 0 ~ MAX-1 사이의 난수 생성
-	int nY = rand() % (MAX);
+	int nX = rand() % (MAX_X); // 0 ~ MAX-1 사이의 난수 생성
+	int nY = rand() % (MAX_Y);
 
 	while (ExistApple(nX, nY))
 	{
-		nX = rand() % (MAX + 1);
-		nY = rand() % (MAX + 1);
+		nX = rand() % (MAX_X + 1);
+		nY = rand() % (MAX_Y + 1);
 	}
 
 	Point sRet = { nX, nY };

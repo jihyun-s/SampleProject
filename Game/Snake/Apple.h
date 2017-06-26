@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
-#include <algorithm>
 #include "COMMON_TYPES.h"
 using namespace std;
+
 
 class Apple
 {
@@ -15,7 +15,7 @@ public:
 
 	APPLE_CLR GetColor();					//사과 색깔 get함수
 	int GetSize();							//사과의 갯수 get함수
-	Point MakeApplePosition(int MAX);		//사과가 없는 곳에 사과를 생성
+	Point MakeApplePosition(int MAX_X, int MAX_Y);		//사과가 없는 곳에 사과를 생성
 	bool ExistApple(int x, int y);			//x, y 의 위치에 이미 사과가 있는지 확인
 	void MakeApple(int x, int y);			//사과 생성 함수
 	void DeleteApple(int x, int y);			//사과 삭제 함수
