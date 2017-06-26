@@ -7,6 +7,14 @@
 #include "afxdialogex.h"
 #include "../utils.h"
 
+#define HEEYA_DEBUG
+#ifdef HEEYA_DEBUG
+#include "Snake.h"
+#include "Apple.h"
+#include "Map.h"
+#include "COMMON_TYPES.h"
+#endif //HEEYA_DEBUG
+
 // CSnakeGameDlg 대화 상자입니다.
 
 IMPLEMENT_DYNAMIC(CSnakeGameDlg, CDialogEx)
@@ -48,6 +56,50 @@ BOOL CSnakeGameDlg::OnInitDialog()
 	this->GetWindowRect(&r);
 	this->SetWindowPos(NULL, r.left, r.top, r.right-r.left, (r.bottom - r.top) - listbottom, 0);
 #endif
+
+#if 0//def HEEYA_DEBUG
+	Snake cSnake;
+	Direction D = cSnake.GetDir();
+	int nSize = cSnake.GetSize();
+	cSnake.SetDir(DOWN);
+	D = cSnake.GetDir();
+
+	cSnake.MoveSnake(1, 1);
+	cSnake.MoveSnake(1, 2);
+	cSnake.MoveSnake(2, 2);
+	cSnake.MoveSnake(2, 1);
+	cSnake.MoveSnake(1, 1);
+
+	bool bSelfKill = cSnake.SnakeSelfKill();
+	nSize = cSnake.GetSize();
+#endif //HEEYA_DEBUG
+
+#if 0//def HEEYA_DEBUG
+	Apple cRed(RED);
+	Apple cGreen(GREEN);
+
+	int nSize = cRed.GetSize();
+	APPLE_CLR c = cRed.GetColor();
+	c = cGreen.GetColor();
+	Point pTEST = cRed.MakeApplePosition(10);
+	cRed.MakeApple(pTEST.x, pTEST.y);
+	nSize = cRed.GetSize();
+	pTEST = cRed.MakeApplePosition(10);
+	cRed.MakeApple(pTEST.x, pTEST.y);
+	nSize = cRed.GetSize();
+	pTEST = cRed.MakeApplePosition(10);
+	cRed.MakeApple(pTEST.x, pTEST.y);
+	cRed.DeleteApple(5, 5);
+
+#endif //HEEYA_DEBUG
+
+#if 0//def HEEYA_DEBUG
+	Map cMap(10, 10);
+	cMap.MakeRandomApple(3);
+	bool bExistApple = cMap.ExistApple(2, 2);
+	if (bExistApple)
+		cMap.DeleteApple(2, 2);
+#endif //HEEYA_DEBUG
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
