@@ -16,6 +16,7 @@
 #endif //HEEYA_DEBUG
 
 // CSnakeGameDlg 대화 상자입니다.
+#define SNAKE_GAME_TIMER 9999
 
 IMPLEMENT_DYNAMIC(CSnakeGameDlg, CDialogEx)
 
@@ -38,6 +39,10 @@ void CSnakeGameDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CSnakeGameDlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CSnakeGameDlg::OnBnClickedOk)
+	ON_WM_TIMER()
+	ON_BN_CLICKED(IDD_BTN_START, &CSnakeGameDlg::OnBnClickedBtnStart)
+	ON_BN_CLICKED(IDEXIT, &CSnakeGameDlg::OnBnClickedExit)
+	ON_BN_CLICKED(IDD_BTN_RESTART, &CSnakeGameDlg::OnBnClickedBtnRestart)
 END_MESSAGE_MAP()
 
 
@@ -47,8 +52,6 @@ BOOL CSnakeGameDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 #ifdef _DEBUG
 	m_listmsg.ShowWindow(SW_SHOW);
-
-	TraceListbox(&m_listmsg, L"[%d]Snake Dialog 생성", __LINE__);
 #else
 	CRect r;
 	m_listmsg.GetWindowRect(&r);
@@ -56,6 +59,7 @@ BOOL CSnakeGameDlg::OnInitDialog()
 	this->GetWindowRect(&r);
 	this->SetWindowPos(NULL, r.left, r.top, r.right-r.left, (r.bottom - r.top) - listbottom, 0);
 #endif
+	TraceListbox(&m_listmsg, L"[%d]Snake Dialog 생성", __LINE__);
 
 #if 0//def HEEYA_DEBUG
 	Snake cSnake;
@@ -108,4 +112,54 @@ void CSnakeGameDlg::OnBnClickedOk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CDialogEx::OnOK();
+}
+
+void CSnakeGameDlg::OnTimer(UINT nIDEvent)
+{
+	switch (nIDEvent)
+	{
+	case SNAKE_GAME_TIMER:
+	{
+		//if (pSnakeGame->SnakeCanGo())
+		//	pSnakeGame->MoveStraight();
+		//else 게임 종료
+	}
+		break;
+	default:
+		break;
+	}
+}
+
+void CSnakeGameDlg::OnBnClickedBtnStart()
+{
+	TraceListbox(&m_listmsg, L"[%d]Snake Game 시작", __LINE__);
+
+	// Snake game start
+	SetTimer(SNAKE_GAME_TIMER, 10000, NULL); // timer 
+	TraceListbox(&m_listmsg, L"[%d]Snake Game 타이머 생성", __LINE__);
+	
+}
+
+
+void CSnakeGameDlg::OnBnClickedExit()
+{
+	TraceListbox(&m_listmsg, L"[%d]Snake Game 종료 시작", __LINE__);
+
+	KillTimer(SNAKE_GAME_TIMER);
+	TraceListbox(&m_listmsg, L"[%d]Snake Game 타이머 종료", __LINE__);
+	// To do : dialog 종료 코드
+	CDialogEx::OnCancel();
+}
+
+
+void CSnakeGameDlg::OnBnClickedBtnRestart()
+{
+	TraceListbox(&m_listmsg, L"[%d]Snake Game 재시작", __LINE__);
+	KillTimer(SNAKE_GAME_TIMER);
+	TraceListbox(&m_listmsg, L"[%d]Snake Game 타이머 종료", __LINE__);
+
+	SetTimer(SNAKE_GAME_TIMER, 10000, NULL); // timer 
+	TraceListbox(&m_listmsg, L"[%d]Snake Game 타이머 생성", __LINE__);
+
+
 }

@@ -68,6 +68,7 @@ void SaveToLogFile(CString strMsg)
 
 void _MessageBox(int nMode, void* pCtl, WCHAR* s, ...)
 {
+#ifdef _DEBUG
 	WCHAR *str = (WCHAR*)malloc(sizeof(WCHAR) * 1024 * 10);
 	va_list ap;
 
@@ -99,7 +100,7 @@ void _MessageBox(int nMode, void* pCtl, WCHAR* s, ...)
 
 	if (nMode == 1)
 		OutputDebugString(str2);
-	else if (nMode == 2)
+	else if (nMode == 2 && pCtl != NULL)
 	{
 		CListBox* lstmsg = (CListBox*)pCtl;
 		if (lstmsg && lstmsg->GetSafeHwnd())
@@ -110,7 +111,9 @@ void _MessageBox(int nMode, void* pCtl, WCHAR* s, ...)
 
 			lstmsg->SetCurSel(lstmsg->GetCount() - 1);
 		}
-		//SaveToLogFile(str2);
+		
 	}
+	//SaveToLogFile(str2);
 	free(str2);
+#endif
 }
