@@ -1,5 +1,5 @@
 #pragma once
-
+#include "SnakeGame.h"
 
 // CSnakeGameDlg 대화 상자입니다.
 
@@ -13,7 +13,8 @@ public:
 
 // 대화 상자 데이터입니다.
 	enum { IDD = IDD_GAME_SNAKE };
-
+private:
+	SnakeGame *pSnakeGame;
 protected:
 	CListBox m_listmsg;
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
@@ -21,5 +22,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();
-	
+	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnBnClickedBtnStart();
+	afx_msg void OnBnClickedExit();
+	afx_msg void OnBnClickedBtnRestart();
 };
