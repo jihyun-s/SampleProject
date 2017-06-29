@@ -27,8 +27,8 @@ Point Apple::MakeApplePosition(int MAX_X, int MAX_Y)
 
 	while (ExistApple(nX, nY))
 	{
-		nX = rand() % (MAX_X + 1);
-		nY = rand() % (MAX_Y + 1);
+		nX = rand() % (MAX_X);
+		nY = rand() % (MAX_Y);
 	}
 
 	Point sRet = { nX, nY };

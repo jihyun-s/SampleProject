@@ -135,7 +135,7 @@ void CSnakeGameDlg::OnBnClickedBtnStart()
 	TraceListbox(&m_listmsg, L"[%d]Snake Game 시작", __LINE__);
 
 	// Snake game start
-	SetTimer(SNAKE_GAME_TIMER, 10000, NULL); // timer 
+	SetTimer(SNAKE_GAME_TIMER, 1000, NULL); // timer 
 	TraceListbox(&m_listmsg, L"[%d]Snake Game 타이머 생성", __LINE__);
 	
 }
@@ -158,7 +158,7 @@ void CSnakeGameDlg::OnBnClickedBtnRestart()
 	KillTimer(SNAKE_GAME_TIMER);
 	TraceListbox(&m_listmsg, L"[%d]Snake Game 타이머 종료", __LINE__);
 
-	SetTimer(SNAKE_GAME_TIMER, 10000, NULL); // timer 
+	SetTimer(SNAKE_GAME_TIMER, 1000, NULL); // timer 
 	TraceListbox(&m_listmsg, L"[%d]Snake Game 타이머 생성", __LINE__);
 
 

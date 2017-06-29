@@ -3,7 +3,7 @@
 Snake::Snake()
 {
 	vSnake.push_back(make_pair(0,0));
-	Dir = LEFT;
+	Dir = RIGHT;
 }
 
 Snake::~Snake()

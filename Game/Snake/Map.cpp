@@ -4,8 +4,7 @@ Map::Map() : X(10), Y(10), cRedApple(RED), cGreenApple(GREEN)
 {
 	for (int i = 0; i < 10; i++)
 	{
-		vector<int> element;
-		element.resize(10, 0);
+		vector<int> element(10,0);
 		vMap.push_back(element);
 	}
 }
@@ -14,8 +13,7 @@ Map::Map(int x, int y) : X(x), Y(y), cRedApple(RED), cGreenApple(GREEN)
 {
 	for (int i = 0; i < x; i++)
 	{
-		vector<int> element;
-		element.resize(y, 0);
+		vector<int> element(y,0);
 		vMap.push_back(element);
 	}
 }
