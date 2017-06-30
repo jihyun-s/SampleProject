@@ -22,7 +22,7 @@ bool SnakeGame::MoveStraight()
 	bool ret; // 몸길이 0이거나, self kill
 	Point nextPos = pSnake->GetNextPosition();
 
-	if (pMap->DestroyWall(nextPos.x, nextPos.y))
+	if (!pMap->DestroyWall(nextPos.x, nextPos.y))
 	{
 		Apple* tmp = NULL;
 		bool bApple = pMap->ExistApple(nextPos.x, nextPos.y, &tmp);
