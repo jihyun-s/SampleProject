@@ -33,7 +33,7 @@ Direction Snake::SetDir(Direction NextDir)
 //이뜻은 이미 이동할 x,y를 Snakegame에서 계산했다는 뜻이됨(ExistApple 검사할때 들어가는 인자 x,y는 곧 뱀이이동할 위치니까)
 //근데 이렇게 되면 Snake 클래스에 Dir을 가지고 있어야 할 이유가 사라지는것 아닌지 .... ( Dir를 사용하는곳이 Snake가 아닌 SnakeGame 되어버리니까 )
 //또한, 원래 뱀이이동하면 그위치에있던 사과가 없어져야 함. 이작업은 꼭 SnakeGame 클래스에서 Snake::MoveSnake 호출 후에 잊지말고 해줄것. ( 해당 클래스에서는 사과 못지움)
-bool Snake::MoveSnake(APPLE_CLR c, int X, int Y)
+bool Snake::MoveSnake(int X, int Y, APPLE_CLR c)
 {
 	//vector의 end()가 뱀의 머리임.
 
@@ -77,4 +77,36 @@ bool Snake::SnakeSelfKill()
 	}
 
 	return bSelfKill;
+}
+
+const Point Snake::GetNextPosition()
+{
+	pair<int, int> startPos = vSnake.back();
+	int x = startPos.first;
+	int y = startPos.second;
+
+	switch(Dir)
+	{
+	case LEFT:
+		--x;
+		break;
+		
+	case RIGHT:
+		++x;
+		break;
+
+	case UP:
+		--y;
+		break;
+
+	case DOWN:
+		++y;
+		break;
+	
+	default:
+		x = y = -1;
+		break;
+	}
+
+	return Point(x, y);
 }

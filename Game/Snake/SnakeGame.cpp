@@ -16,21 +16,25 @@ SnakeGame::~SnakeGame()
 		delete pSnake;
 }
 
-bool SnakeGame::SnakeCanGo()
-{
-	bool bResult = true;
-	// condition
-	// 1. 벽에 충돌 x
-	// 2. 뱀에 충돌 x 
-	// 3. 뱀 몸길이 0 x
-
-
-	return bResult;
-}
-
-void SnakeGame::MoveStraight()
+bool SnakeGame::MoveStraight()
 {
 	// 한 칸씩 이동
+	bool ret; // 몸길이 0이거나, self kill
+	Point nextPos = pSnake->GetNextPosition();
+
+	if (pMap->DestroyWall(nextPos.x, nextPos.y))
+	{
+		Apple* tmp = NULL;
+		bool bApple = pMap->ExistApple(nextPos.x, nextPos.y, &tmp);
+		if (bApple)
+			ret = pSnake->MoveSnake(nextPos.x, nextPos.y, tmp->GetAppleColor());
+		else
+			ret = pSnake->MoveSnake(nextPos.x, nextPos.y);
+	}
+	else // 벽에 충돌
+		return false;
+	
+	return ret;
 }
 
 void SnakeGame::ChangDirection(Direction a_dir)

@@ -13,8 +13,7 @@ public:
 	explicit SnakeGame();
 	~SnakeGame();
 
-	bool SnakeCanGo();
-	void MoveStraight();
+	bool MoveStraight();
 	void ChangDirection(Direction a_dir);
 };
 
