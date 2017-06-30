@@ -23,7 +23,7 @@ APPLE_CLR Apple::RandomColor()
 	return nRandom;
 }
 
-Apple* Apple::CreateApple(int nMapSizeX, int nMapSizeY, APPLE_CLR c)
+void Apple::CreateApple(int nMapSizeX, int nMapSizeY, APPLE_CLR c)
 {
 	if (c == RED || c == GREEN)
 	{
@@ -36,5 +36,5 @@ Apple* Apple::CreateApple(int nMapSizeX, int nMapSizeY, APPLE_CLR c)
 
 	sApplePosition = RandomXY(nMapSizeX, nMapSizeY);
 
-	return this;
+	//return this;
 }

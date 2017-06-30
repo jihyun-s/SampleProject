@@ -14,13 +14,13 @@ private:
 
 public:
 	Map();
-	Map(int x, int y);
+	Map(const int x, const int y);
 	~Map();
 	Size GetMapSize();
 	void MakeApple();
-	Apple* ExistApple(int x, int y);
-	void DeleteApple(int x, int y);
-	bool DestroyWall(int x, int y);
+	bool ExistApple(const int x, const int y, Apple** sGetApple=NULL);
+	bool DeleteApple(const int x, const int y);		// 예외처리를 위한 리턴 bool
+	bool DestroyWall(const int x, const int y) const;
 	
 };
 
