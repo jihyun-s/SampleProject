@@ -19,22 +19,24 @@ SnakeGame::~SnakeGame()
 bool SnakeGame::MoveStraight()
 {
 	// 한 칸씩 이동
-	bool ret; // 몸길이 0이거나, self kill
+	bool ret1, ret2; 
+	APPLE_CLR appleColor = NONECOLOR;
 	Point nextPos = pSnake->GetNextPosition();
 
-	if (!pMap->DestroyWall(nextPos.x, nextPos.y))
+	// ret1 : 벽에 충돌
+	// 벽에 충돌이어도 일단 이동시킴
+	if (!(ret1=pMap->DestroyWall(nextPos.x, nextPos.y)))
 	{
 		Apple* tmp = NULL;
 		bool bApple = pMap->ExistApple(nextPos.x, nextPos.y, &tmp);
 		if (bApple)
-			ret = pSnake->MoveSnake(nextPos.x, nextPos.y, tmp->GetAppleColor());
-		else
-			ret = pSnake->MoveSnake(nextPos.x, nextPos.y);
+			appleColor = tmp->GetAppleColor();		
 	}
-	else // 벽에 충돌
-		return false;
+
+	// ret2 : 몸길이0 or self kill
+	ret2 = pSnake->MoveSnake(nextPos.x, nextPos.y, appleColor);
 	
-	return ret;
+	return (!ret1||!ret2)?false:true;
 }
 
 void SnakeGame::ChangDirection(Direction a_dir)
