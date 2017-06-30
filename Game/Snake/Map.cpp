@@ -1,19 +1,19 @@
 #include "Map.h"
 
-Map::Map() : X(10), Y(10), cRedApple(RED), cGreenApple(GREEN)
+Map::Map() : sMapSize(MAP_DEFAULT, MAP_DEFAULT)
 {
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < MAP_DEFAULT; i++)
 	{
-		vector<int> element(10,0);
+		vector<int> element(MAP_DEFAULT, 0);
 		vMap.push_back(element);
 	}
 }
 
-Map::Map(int x, int y) : X(x), Y(y), cRedApple(RED), cGreenApple(GREEN)
+Map::Map(int x, int y) : sMapSize(x, y)
 {
 	for (int i = 0; i < x; i++)
 	{
-		vector<int> element(y,0);
+		vector<int> element(y, 0);
 		vMap.push_back(element);
 	}
 }
@@ -27,69 +27,69 @@ Map::~Map()
 	vMap.clear();
 }
 
-bool Map::ExistApple(int x, int y)
+Size Map::GetMapSize()
 {
-	return vMap[x][y] == 1 ? true : false;
+	return sMapSize;
 }
 
-void Map::MakeApple(APPLE_CLR c)
+void Map::MakeApple()
 {
-	Apple* pMake = NULL;
-
-	if (c == RED)
-		pMake = &cRedApple;
-	else if (c == GREEN)
-		pMake = &cGreenApple;
-	else
+	Apple* pNewApple = new Apple;
+	pNewApple->CreateApple(sMapSize.x, sMapSize.y, NONECOLOR); // createapple 을 이런식으로쓰는게맞나.. && default로 NONECOLOR 로 인자를 주는것인가?
+	
+	Apple* pTmpApple = ExistApple(pNewApple->GetAppleX(), pNewApple->GetAppleY());
+	while (pTmpApple)
 	{
-		//TraceListbox(&m_listmsg, L"[%d]Snake MakeApple Error", __LINE__);
-		return;
+		pNewApple->CreateApple(sMapSize.x, sMapSize.y, NONECOLOR); // createapple 을 이런식으로쓰는게맞나.. && default로 NONECOLOR 로 인자를 주는것인가?
+		pTmpApple = ExistApple(pNewApple->GetAppleX(), pNewApple->GetAppleY());
 	}
 
-	Point pPosition = pMake->MakeApplePosition(X, Y);
+	vApple.push_back(*pNewApple);
+	vMap[pNewApple->GetAppleX()][pNewApple->GetAppleY()] = 1;
+}
 
-	while (vMap[pPosition.x][pPosition.y] == 1)
+Apple* Map::ExistApple(int x, int y)
+{
+
+	/* <iterator version>
+	for (vector<Apple>::iterator it = vApple.begin(); it != vApple.end(); ++it)
 	{
-		pPosition = pMake->MakeApplePosition(X, Y);
+		if (it->GetAppleX() == x && it->GetAppleY() == y)
+			return NULL; //*it; 해당부분 it에 해당하는 vApple pointer 돌려주도록 수정필요
+	}
+	*/
+
+	for (int i = 0; i < vApple.size(); i++)
+	{
+		if (vApple[i].GetAppleX() == x && vApple[i].GetAppleY() == y)
+			return &vApple[i];
 	}
 
-	vMap[pPosition.x][pPosition.y] = 1;				//사과가 있는 것을 표시
-	pMake->MakeApple(pPosition.x, pPosition.y);
+	return NULL;
 }
 
 void Map::DeleteApple(int x, int y)
 {
-	if (vMap[x][y] == 0) return;
-
-	if (cRedApple.ExistApple(x, y))
-		cRedApple.DeleteApple(x, y);
-
-	else if (cGreenApple.ExistApple(x, y))
-		cGreenApple.DeleteApple(x, y);
-
-	else
+	/* <iterator version>
+	for (vector<Apple>::iterator it = vApple.begin(); it != vApple.end(); ++it)
 	{
-		//TraceListbox(&m_listmsg, L"[%d]Snake DeleteApple Error", __LINE__);
-		return;
+		if (it->GetAppleX() == x && it->GetAppleY() == y)
+			//이부분도. iterator 이용해서 삭제할 방법이 없는것인가
 	}
+	*/
 
-	vMap[x][y] = 0; //사과 없앤 후 Map에 정보 변경
-
+	for (int i = 0; i < vApple.size(); i++)
+	{
+		if (vApple[i].GetAppleX() == x && vApple[i].GetAppleY() == y)
+			vApple.erase(vApple.begin() + i);
+	}
 	return;
 }
 
-void Map::MakeRandomApple(int Num)
+bool Map::DestroyWall(int x, int y)
 {
-	int RedNum = rand() % Num; // 0 ~ Num-1 사이의 난수 생성
-	int GreenNum = Num - RedNum;
-
-	while (RedNum--)
-	{
-		MakeApple(RED);
-	}
-
-	while (GreenNum--)
-	{
-		MakeApple(GREEN);
-	}
+	if (x < 0 || x >= sMapSize.x || y < 0 || y >= sMapSize.y) // snake crash from wall
+		return true;
+	else
+		return false;
 }

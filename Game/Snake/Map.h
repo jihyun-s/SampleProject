@@ -1,25 +1,26 @@
 #pragma once
 #include "Apple.h"
 #include <vector>
+
 using namespace std;
-#define MAP_MAX	10
+#define MAP_DEFAULT	10
 
 class Map
 {
 private:
-	int X;
-	int Y;
-	Apple cRedApple;
-	Apple cGreenApple;
-	vector< vector<int> > vMap;
+	Size sMapSize;
+	vector<Apple> vApple;
+	vector<vector<int>> vMap;
 
 public:
 	Map();
 	Map(int x, int y);
 	~Map();
-	bool ExistApple(int x, int y);
-	void MakeApple(APPLE_CLR c);
+	Size GetMapSize();
+	void MakeApple();
+	Apple* ExistApple(int x, int y);
 	void DeleteApple(int x, int y);
-	void MakeRandomApple(int Num);
+	bool DestroyWall(int x, int y);
+	
 };
 
