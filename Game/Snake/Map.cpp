@@ -46,7 +46,6 @@ void Map::MakeApple()
 
 bool Map::ExistApple(const int x, const int y, Apple** sGetApple)
 {
-	// <iterator version>
 	// 사과가 있는 경우
 	for (vector<Apple>::iterator it = vApple.begin(); it != vApple.end(); ++it)
 	{
@@ -57,37 +56,21 @@ bool Map::ExistApple(const int x, const int y, Apple** sGetApple)
 		}
 	}
 	
-	/*
-	for (int i = 0; i < vApple.size(); i++)
-	{
-		if (vApple[i].GetAppleX() == x && vApple[i].GetAppleY() == y)
-			return &vApple[i];
-	}
-	*/
-
 	sGetApple = NULL;	// 사과가 없는 경우
 	return false;
 }
 
 bool Map::DeleteApple(const int x, const int y)
 {
-	// <iterator version>
 	for (vector<Apple>::iterator it = vApple.begin(); it != vApple.end(); ++it)
 	{
 		if (it->GetAppleX() == x && it->GetAppleY() == y)
 		{
-			vApple.erase(it); //이부분도. iterator 이용해서 삭제할 방법이 없는것인가
+			vApple.erase(it); 
 			return true;
 		}
 	}
 	
-	/*
-	for (int i = 0; i < vApple.size(); i++)
-	{
-		if (vApple[i].GetAppleX() == x && vApple[i].GetAppleY() == y)
-			vApple.erase(vApple.begin() + i);
-	}
-	*/
 	return false;
 }
 
