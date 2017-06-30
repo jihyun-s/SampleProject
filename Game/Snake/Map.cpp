@@ -20,11 +20,9 @@ Map::Map(const int x, const int y) : sMapSize(x, y)
 
 Map::~Map()
 {
-	for (int i = 0; i < (int)vMap.size(); i++)
-	{
-		vMap[i].clear();
-	}
-	vMap.clear();
+	//임시객체와 swap하여 capacity 를 0으로 만들며 해제
+	vector<vector<int>>().swap(vMap);
+	vector<Apple>().swap(vApple); 
 }
 
 Size Map::GetMapSize()
@@ -32,10 +30,13 @@ Size Map::GetMapSize()
 	return sMapSize;
 }
 
-void Map::MakeApple()
+
+// MakeApple(APPLE_CLR c=NONECOLOR) 이렇게 인자로 넘겨주지 않으면 Apple->CreateApple 의 마지막 인자 c는 의미가 없어지는 것 아닌가욤?
+// 차라리 아예 사과 만들때 컬러 지정 없이 항상 랜덤으로 만들도록 하는것은 어떨지??
+void Map::MakeApple() 
 {
 	Apple* pNewApple = new Apple;
-	pNewApple->CreateApple(sMapSize.x, sMapSize.y); // createapple 을 이런식으로쓰는게맞나.. && default로 NONECOLOR 로 인자를 주는것인가?
+	pNewApple->CreateApple(sMapSize.x, sMapSize.y); //apple color는 현재 default로 random 생성하게 되어있음
 	
 	while (ExistApple(pNewApple->GetAppleX(), pNewApple->GetAppleY()))
 		pNewApple->CreateApple(sMapSize.x, sMapSize.y);
@@ -55,7 +56,7 @@ bool Map::ExistApple(const int x, const int y, Apple** sGetApple)
 			return true;
 		}
 	}
-	
+
 	sGetApple = NULL;	// 사과가 없는 경우
 	return false;
 }
