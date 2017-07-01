@@ -19,6 +19,8 @@ CSnakeGameDlg::CSnakeGameDlg(CWnd* pParent /*=NULL*/)
 
 CSnakeGameDlg::~CSnakeGameDlg()
 {
+	if (pSnakeGame)
+		delete pSnakeGame;
 }
 
 void CSnakeGameDlg::DoDataExchange(CDataExchange* pDX)
@@ -96,7 +98,6 @@ void CSnakeGameDlg::OnTimer(UINT nIDEvent)
 		TraceListbox(&m_listmsg, L"[%d][DLG] Snake 이동", __LINE__);
 		if (!pSnakeGame->MoveStraight())	// die
 		{
-			TraceListbox(&m_listmsg, L"[%d][DLG] Snake 종료", __LINE__);
 			KillTimer(SNAKE_GAME_TIMER);
 		}
 	}
@@ -127,6 +128,7 @@ void CSnakeGameDlg::OnBnClickedExit()
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 종료 시작", __LINE__);
 
 	KillTimer(SNAKE_GAME_TIMER);
+	
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 종료", __LINE__);
 	
 	CDialogEx::OnCancel();
@@ -138,9 +140,16 @@ void CSnakeGameDlg::OnBnClickedBtnRestart()
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 재시작", __LINE__);
 	KillTimer(SNAKE_GAME_TIMER);
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 종료", __LINE__);
+	if (pSnakeGame)
+		delete pSnakeGame;
+	pSnakeGame = NULL;
 
 	SetTimer(SNAKE_GAME_TIMER, 1000, NULL); // timer 
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
 
-
+#ifdef _DEBUG
+	pSnakeGame = new SnakeGame(&m_listmsg);
+#else
+	pSnakeGame = new SnakeGame();
+#endif
 }
