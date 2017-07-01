@@ -41,7 +41,7 @@ bool SnakeGame::MoveStraight()
 	// ret2 : ¸ö±æÀÌ0 or self kill
 	ret2 = pSnake->MoveSnake(nextPos.x, nextPos.y, appleColor);
 	
-	return (!ret1||!ret2)?false:true;
+	return (ret1||!ret2)?false:true;
 }
 
 void SnakeGame::ChangDirection(Direction a_dir)
