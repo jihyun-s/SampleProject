@@ -1,9 +1,9 @@
 #include "Snake.h"
-
+#include "../stdafx.h"
+#include "../utils.h"
 Snake::Snake()
 {
-	vSnake.push_back(make_pair(0,0));
-	Dir = RIGHT;
+	init();
 }
 
 Snake::~Snake()
@@ -11,6 +11,17 @@ Snake::~Snake()
 	vSnake.clear();
 }
 
+Snake::Snake(void *pDebugConsole) :m_pDebugConsole(pDebugConsole)
+{
+	init();
+}
+
+void Snake::init()
+{
+	vSnake.push_back(make_pair(0, 0));
+	Dir = RIGHT;
+	TraceListbox(m_pDebugConsole, L"[%d][Snake] init:x(0),y(0), direction:RIGHT", __LINE__);
+}
 int Snake::GetSize()
 {
 	return vSnake.size();
@@ -25,6 +36,7 @@ Direction Snake::SetDir(Direction NextDir)
 {
 	Direction cOldDir = Dir;
 	Dir = NextDir;
+	TraceListbox(m_pDebugConsole, L"[%d][Snake] SetDirection:%d->%d", __LINE__, cOldDir,Dir);
 	return Dir;
 }
 
@@ -36,6 +48,7 @@ Direction Snake::SetDir(Direction NextDir)
 bool Snake::MoveSnake(int X, int Y, APPLE_CLR c)
 {
 	//vector의 end()가 뱀의 머리임.
+	TraceListbox(m_pDebugConsole, L"[%d][Snake] Start Move (%d,%d) color=%d", __LINE__, X, Y, c);
 
 	int nSize = vSnake.size();
 
@@ -60,6 +73,7 @@ bool Snake::MoveSnake(int X, int Y, APPLE_CLR c)
 	if (SnakeSelfKill())
 		return false;
 
+	TraceListbox(m_pDebugConsole, L"[%d][Snake] Success Move (%d,%d) color=%d", __LINE__, X, Y, c);
 	return true;
 }
 
@@ -69,9 +83,11 @@ bool Snake::SnakeSelfKill()
 
 	for (int i = 0; i < GetSize(); i++)
 	{
+		// !!!!!!!bug!!!!!!!!!!수정필요
 		if ((vSnake[i].first == vSnake[GetSize() - 1].first) && (vSnake[i].second == vSnake[GetSize() - 1].second))
 		{
 			bSelfKill = true;
+			TraceListbox(m_pDebugConsole, L"[%d][Error][Snake] SnakeSelfKill!!!!!",__LINE__);
 			break;
 		}
 	}
@@ -107,6 +123,6 @@ const Point Snake::GetNextPosition()
 		x = y = -1;
 		break;
 	}
-
+	TraceListbox(m_pDebugConsole, L"[%d][Snake] Get Next(%d,%d)", __LINE__, x, y);
 	return Point(x, y);
 }

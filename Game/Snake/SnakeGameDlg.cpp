@@ -51,8 +51,33 @@ BOOL CSnakeGameDlg::OnInitDialog()
 	this->GetWindowRect(&r);
 	this->SetWindowPos(NULL, r.left, r.top, r.right-r.left, (r.bottom - r.top) - listbottom, 0);
 #endif
-	TraceListbox(&m_listmsg, L"[%d]Snake Dialog 생성", __LINE__);
+	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Dialog 생성", __LINE__);
 
+#if 0 // ViewTest2
+	pContext.m_pNewViewClass = RUNTIME_CLASS(CSnakeGameView);
+	//pContext.m_pCurrentDoc = new CSnakeGameDocument;
+	pMapView = (CSnakeGameView *)(((CFrameWnd*)this)->CreateView(&pContext));
+	ASSERT(pMapView);
+	pMapView->ShowWindow(SW_NORMAL);
+	RECT r;
+	m_Map.GetWindowRect(&r);
+	pMapView->MoveWindow(&r);
+	pMapView->Invalidate();
+#endif
+#if 0 // View Test2
+	CRuntimeClass  *pObject;
+	pObject = RUNTIME_CLASS(CSnakeGameView);
+	pMapView = (CSnakeGameView*)pObject->CreateObject();
+	RECT r;
+	m_Map.GetWindowRect(&r);
+	if (!pMapView->Create(NULL, NULL, AFX_WS_DEFAULT_VIEW,
+		r, this, AFX_IDW_PANE_FIRST, NULL))
+	{
+		TRACE0("Failed to create view window\n");
+		return -1;
+	}
+	pMapView->RedrawWindow();
+#endif
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -68,9 +93,12 @@ void CSnakeGameDlg::OnTimer(UINT nIDEvent)
 	{
 	case SNAKE_GAME_TIMER:
 	{
-		//if (pSnakeGame->SnakeCanGo())
-		//	pSnakeGame->MoveStraight();
-		//else 게임 종료
+		TraceListbox(&m_listmsg, L"[%d][DLG] Snake 이동", __LINE__);
+		if (!pSnakeGame->MoveStraight())	// die
+		{
+			TraceListbox(&m_listmsg, L"[%d][DLG] Snake 종료", __LINE__);
+			KillTimer(SNAKE_GAME_TIMER);
+		}
 	}
 		break;
 	default:
@@ -80,34 +108,39 @@ void CSnakeGameDlg::OnTimer(UINT nIDEvent)
 
 void CSnakeGameDlg::OnBnClickedBtnStart()
 {
-	TraceListbox(&m_listmsg, L"[%d]Snake Game 시작", __LINE__);
+	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 시작", __LINE__);
 
 	// Snake game start
 	SetTimer(SNAKE_GAME_TIMER, 1000, NULL); // timer 
-	TraceListbox(&m_listmsg, L"[%d]Snake Game 타이머 생성", __LINE__);
-	
+	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
+
+#ifdef _DEBUG
+	pSnakeGame = new SnakeGame(&m_listmsg);
+#else
+	pSnakeGame = new SnakeGame();
+#endif
 }
 
 
 void CSnakeGameDlg::OnBnClickedExit()
 {
-	TraceListbox(&m_listmsg, L"[%d]Snake Game 종료 시작", __LINE__);
+	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 종료 시작", __LINE__);
 
 	KillTimer(SNAKE_GAME_TIMER);
-	TraceListbox(&m_listmsg, L"[%d]Snake Game 타이머 종료", __LINE__);
-	// To do : dialog 종료 코드
+	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 종료", __LINE__);
+	
 	CDialogEx::OnCancel();
 }
 
 
 void CSnakeGameDlg::OnBnClickedBtnRestart()
 {
-	TraceListbox(&m_listmsg, L"[%d]Snake Game 재시작", __LINE__);
+	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 재시작", __LINE__);
 	KillTimer(SNAKE_GAME_TIMER);
-	TraceListbox(&m_listmsg, L"[%d]Snake Game 타이머 종료", __LINE__);
+	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 종료", __LINE__);
 
 	SetTimer(SNAKE_GAME_TIMER, 1000, NULL); // timer 
-	TraceListbox(&m_listmsg, L"[%d]Snake Game 타이머 생성", __LINE__);
+	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
 
 
 }

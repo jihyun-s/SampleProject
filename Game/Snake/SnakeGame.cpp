@@ -15,7 +15,12 @@ SnakeGame::~SnakeGame()
 	if (pSnake)
 		delete pSnake;
 }
-
+SnakeGame::SnakeGame(void* pDebugConsole)
+{
+	pMap = new Map(pDebugConsole);
+	pSnake = new Snake(pDebugConsole);
+	nScore = 0;
+}
 bool SnakeGame::MoveStraight()
 {
 	// ÇÑ Ä­¾¿ ÀÌµ¿

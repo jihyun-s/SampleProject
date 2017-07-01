@@ -11,10 +11,15 @@ private:
 	Size sMapSize;
 	vector<Apple> vApple;
 	vector<vector<int>> vMap;
-
+	void* m_pDebugConsole;
+	void Init(int x = MAP_DEFAULT, int y = MAP_DEFAULT);
 public:
 	Map();
 	Map(const int x, const int y);
+#ifdef _DEBUG
+	Map(void* pDebugConsole);
+
+#endif
 	~Map();
 	Size GetMapSize();
 	void MakeApple();
