@@ -154,38 +154,3 @@ void CSnakeGameDlg::OnBnClickedBtnRestart()
 	pSnakeGame = new SnakeGame();
 #endif
 }
-
-BOOL CSnakeGameDlg::PreTranslateMessage(MSG* pMsg)
-{
-	if (pMsg->message == WM_KEYDOWN && pSnakeGame)
-	{
-		switch (pMsg->wParam)
-		{
-			case VK_LEFT:
-			{
-				pSnakeGame->ChangDirection(LEFT);
-				return TRUE;
-			}
-			case VK_RIGHT:
-			{
-				pSnakeGame->ChangDirection(RIGHT);
-				return TRUE;
-			}
-			case VK_UP:
-			{
-				pSnakeGame->ChangDirection(UP);
-				return TRUE;
-			}
-			case VK_DOWN:
-			{
-				pSnakeGame->ChangDirection(DOWN);
-				return TRUE;
-			}
-			default:
-				break;
-		}
-	}
-
-	return CDialogEx::PreTranslateMessage(pMsg);
-}
-
