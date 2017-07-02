@@ -200,9 +200,26 @@ void CSnakeGameDlg::OnPaint()
 	CRect r;
 	m_Map.GetWindowRect(r);
 	ScreenToClient(r);
+	CPen BGPen(PS_NULL, 1, RGB(255, 0, 0));
+	CBrush BGBrush(RGB(185, 122, 87));
 
-	dc.SelectStockObject(BLACK_BRUSH);
+	dc.SelectObject(&BGPen);
+	dc.SelectObject(&BGBrush);
 	dc.Rectangle(r);
+
+	int nLEFT = r.left+4;
+	int nTOP = r.top+4;
+
+	int nSize = (r.right - r.left)/10;
+	CBrush SnakeBrush(RGB(200,191,231));
+	dc.SelectObject(&SnakeBrush);
+
+	int nTmp = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		dc.Ellipse(nLEFT + nTmp, nTOP, nLEFT + (nSize*(i + 1)), nTOP + nSize);
+		nTmp += nSize;
+	}
 
 #if 0
 	// 레스터 오퍼레이션을 R2_XORPEN으로 설정
