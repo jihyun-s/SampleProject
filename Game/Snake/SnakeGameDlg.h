@@ -1,6 +1,6 @@
 #pragma once
 #include "SnakeGame.h"
-#include "SnakeGameView.h"
+//#include "SnakeGameView.h"
 //#include "SnakeGameDocument.h"
 #include "afxwin.h"
 
@@ -33,4 +33,5 @@ public:
 	afx_msg void OnBnClickedExit();
 	afx_msg void OnBnClickedBtnRestart();
 	CStatic m_Map;
+	afx_msg void OnPaint();
 };
