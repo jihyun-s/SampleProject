@@ -13,7 +13,7 @@
 IMPLEMENT_DYNAMIC(CSnakeGameDlg, CDialogEx)
 
 CSnakeGameDlg::CSnakeGameDlg(CWnd* pParent /*=NULL*/)
-	: CDialogEx(CSnakeGameDlg::IDD, pParent)
+: CDialogEx(CSnakeGameDlg::IDD, pParent)
 {
 	pSnakeGame = NULL;
 }
@@ -28,6 +28,7 @@ void CSnakeGameDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 
+	DDX_Control(pDX, IDC_MAP, m_Map);
 	DDX_Control(pDX, IDC_LIST_SNAKE, m_listmsg);
 }
 
@@ -38,12 +39,13 @@ BEGIN_MESSAGE_MAP(CSnakeGameDlg, CDialogEx)
 	ON_BN_CLICKED(IDD_BTN_START, &CSnakeGameDlg::OnBnClickedBtnStart)
 	ON_BN_CLICKED(IDEXIT, &CSnakeGameDlg::OnBnClickedExit)
 	ON_BN_CLICKED(IDD_BTN_RESTART, &CSnakeGameDlg::OnBnClickedBtnRestart)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
 // CSnakeGameDlg 메시지 처리기입니다.
 BOOL CSnakeGameDlg::OnInitDialog()
-{	
+{
 	CDialogEx::OnInitDialog();
 #ifdef _DEBUG
 	m_listmsg.ShowWindow(SW_SHOW);
@@ -52,11 +54,11 @@ BOOL CSnakeGameDlg::OnInitDialog()
 	m_listmsg.GetWindowRect(&r);
 	int listbottom = r.bottom - r.top;
 	this->GetWindowRect(&r);
-	this->SetWindowPos(NULL, r.left, r.top, r.right-r.left, (r.bottom - r.top) - listbottom, 0);
+	this->SetWindowPos(NULL, r.left, r.top, r.right - r.left, (r.bottom - r.top) - listbottom, 0);
 #endif
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Dialog 생성", __LINE__);
 
-#if 0 // ViewTest2
+#if 0 // View Test2
 	pContext.m_pNewViewClass = RUNTIME_CLASS(CSnakeGameView);
 	//pContext.m_pCurrentDoc = new CSnakeGameDocument;
 	pMapView = (CSnakeGameView *)(((CFrameWnd*)this)->CreateView(&pContext));
@@ -65,7 +67,7 @@ BOOL CSnakeGameDlg::OnInitDialog()
 	RECT r;
 	m_Map.GetWindowRect(&r);
 	pMapView->MoveWindow(&r);
-	pMapView->Invalidate();
+
 #endif
 #if 0 // View Test2
 	CRuntimeClass  *pObject;
@@ -95,18 +97,19 @@ void CSnakeGameDlg::OnBnClickedOk()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CDialogEx::OnOK();
 }
-
+CRect r;
 void CSnakeGameDlg::OnTimer(UINT nIDEvent)
 {
 	switch (nIDEvent)
 	{
 	case SNAKE_GAME_TIMER:
 	{
-		TraceListbox(&m_listmsg, L"[%d][DLG] Snake 이동", __LINE__);
-		if (!pSnakeGame->MoveStraight())	// die
-		{
-			KillTimer(SNAKE_GAME_TIMER);
-		}
+							 TraceListbox(&m_listmsg, L"[%d][DLG] Snake 이동", __LINE__);
+
+							 if (!pSnakeGame->MoveStraight())	// die
+							 {
+								 KillTimer(SNAKE_GAME_TIMER);
+							 }
 	}
 		break;
 	default:
@@ -129,9 +132,9 @@ void CSnakeGameDlg::OnBnClickedExit()
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 종료 시작", __LINE__);
 
 	KillTimer(SNAKE_GAME_TIMER);
-	
+
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 종료", __LINE__);
-	
+
 	CDialogEx::OnCancel();
 }
 
@@ -152,5 +155,26 @@ void CSnakeGameDlg::OnBnClickedBtnRestart()
 	pSnakeGame = new SnakeGame(&m_listmsg);
 #else
 	pSnakeGame = new SnakeGame();
+#endif
+}
+
+
+void CSnakeGameDlg::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	// 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
+	CRect r;
+	m_Map.GetWindowRect(r);
+	ScreenToClient(r);
+
+	dc.SelectStockObject(BLACK_BRUSH);
+	dc.Rectangle(r);
+
+#if 0
+	// 레스터 오퍼레이션을 R2_XORPEN으로 설정
+	dc.SetROP2(R2_XORPEN);
+	dc.SelectStockObject(GRAY_BRUSH);
+	dc.Ellipse(r);
 #endif
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include "SnakeGame.h"
-#include "SnakeGameView.h"
+//#include "SnakeGameView.h"
 //#include "SnakeGameDocument.h"
 #include "afxwin.h"
 
@@ -14,7 +14,7 @@ public:
 	CSnakeGameDlg(CWnd* pParent = NULL);   // 표준 생성자입니다.
 	virtual ~CSnakeGameDlg();
 
-// 대화 상자 데이터입니다.
+	// 대화 상자 데이터입니다.
 	enum { IDD = IDD_GAME_SNAKE };
 private:
 	SnakeGame *pSnakeGame;
@@ -33,4 +33,5 @@ public:
 	afx_msg void OnBnClickedExit();
 	afx_msg void OnBnClickedBtnRestart();
 	CStatic m_Map;
+	afx_msg void OnPaint();
 };
