@@ -28,6 +28,7 @@ void CSnakeGameDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 
+	DDX_Control(pDX, IDC_MAP, m_Map);
 	DDX_Control(pDX, IDC_LIST_SNAKE, m_listmsg);
 }
 
