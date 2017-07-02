@@ -1,7 +1,7 @@
 #include "Snake.h"
 #include "../stdafx.h"
 #include "../utils.h"
-Snake::Snake()
+Snake::Snake() :m_pDebugConsole(NULL)
 {
 	init();
 }
@@ -80,10 +80,10 @@ bool Snake::MoveSnake(int X, int Y, APPLE_CLR c)
 bool Snake::SnakeSelfKill()
 {
 	bool bSelfKill = false;
+	if (GetSize() == 1) return bSelfKill; //몸길이가 1이라면 검사 할 필요가 없다.
 
 	for (int i = 0; i < GetSize(); i++)
 	{
-		// !!!!!!!bug!!!!!!!!!!수정필요
 		if ((vSnake[i].first == vSnake[GetSize() - 1].first) && (vSnake[i].second == vSnake[GetSize() - 1].second))
 		{
 			bSelfKill = true;

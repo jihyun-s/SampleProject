@@ -46,5 +46,5 @@ bool SnakeGame::MoveStraight()
 
 void SnakeGame::ChangDirection(Direction a_dir)
 {
-
+	pSnake->SetDir(a_dir);
 }
