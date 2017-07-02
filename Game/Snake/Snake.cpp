@@ -80,6 +80,7 @@ bool Snake::MoveSnake(int X, int Y, APPLE_CLR c)
 bool Snake::SnakeSelfKill()
 {
 	bool bSelfKill = false;
+	if (GetSize() == 1) return bSelfKill;
 
 	for (int i = 0; i < GetSize(); i++)
 	{
