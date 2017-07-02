@@ -15,6 +15,7 @@ IMPLEMENT_DYNAMIC(CSnakeGameDlg, CDialogEx)
 CSnakeGameDlg::CSnakeGameDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CSnakeGameDlg::IDD, pParent)
 {
+	pSnakeGame = NULL;
 }
 
 CSnakeGameDlg::~CSnakeGameDlg()
@@ -80,6 +81,12 @@ BOOL CSnakeGameDlg::OnInitDialog()
 	}
 	pMapView->RedrawWindow();
 #endif
+
+#ifdef _DEBUG
+	pSnakeGame = new SnakeGame(&m_listmsg);
+#else
+	pSnakeGame = new SnakeGame();
+#endif
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -114,12 +121,6 @@ void CSnakeGameDlg::OnBnClickedBtnStart()
 	// Snake game start
 	SetTimer(SNAKE_GAME_TIMER, 1000, NULL); // timer 
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
-
-#ifdef _DEBUG
-	pSnakeGame = new SnakeGame(&m_listmsg);
-#else
-	pSnakeGame = new SnakeGame();
-#endif
 }
 
 
