@@ -67,12 +67,18 @@ bool Snake::MoveSnake(int X, int Y, APPLE_CLR c)
 		vSnake.erase(vSnake.begin());
 	}
 
-	if (vSnake.size() == 0) 
+	if (vSnake.size() == 0)
+	{
+		TraceListbox(m_pDebugConsole, L"[%d][Error][Snake] died, size=%d", __LINE__, vSnake.size());
 		return false;
+	}
 
 	if (SnakeSelfKill())
+	{
+		TraceListbox(m_pDebugConsole, L"[%d][Error][Snake] self kill, size=%d", __LINE__, vSnake.size());
 		return false;
-
+	}
+	
 	TraceListbox(m_pDebugConsole, L"[%d][Snake] Success Move (%d,%d) color=%d, size=%d", __LINE__, X, Y, c, vSnake.size());
 	return true;
 }
@@ -88,7 +94,7 @@ bool Snake::SnakeSelfKill()
 		if ((vSnake[i].first == vSnake[GetSize() - 1].first) && (vSnake[i].second == vSnake[GetSize() - 1].second))
 		{
 			bSelfKill = true;
-			TraceListbox(m_pDebugConsole, L"[%d][Error][Snake] SnakeSelfKill!!!!!",__LINE__);
+			//TraceListbox(m_pDebugConsole, L"[%d][Error][Snake] SnakeSelfKill!!!!!",__LINE__);
 			break;
 		}
 	}

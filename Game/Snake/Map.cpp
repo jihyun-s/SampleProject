@@ -54,7 +54,7 @@ void Map::MakeApple()
 	vApple.push_back(cNewApple);
 	vMap[cNewApple.GetAppleX()][cNewApple.GetAppleY()] = 1;
 
-	TraceListbox(m_pDebugConsole, L"[%d][Map] MakeApple:x(%d),y(%d)", __LINE__, cNewApple.GetAppleX(), cNewApple.GetAppleY());
+	TraceListbox(m_pDebugConsole, L"[%d][Map] MakeApple:x(%d),y(%d), color(%d)", __LINE__, cNewApple.GetAppleX(), cNewApple.GetAppleY(), cNewApple.GetAppleColor());
 }
 
 bool Map::ExistApple(const int x, const int y, Apple** sGetApple)

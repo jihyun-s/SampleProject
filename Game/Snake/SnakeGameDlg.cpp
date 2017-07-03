@@ -171,8 +171,6 @@ void CSnakeGameDlg::OnBnClickedBtnStart()
 	// Snake game start
 	SetTimer(SNAKE_GAME_TIMER, 1000, NULL); // timer 
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
-
-	//SetTimer(SNAKE_GAME_MAKE_APPLE_TIMER, 5000, NULL);
 }
 
 
@@ -181,6 +179,7 @@ void CSnakeGameDlg::OnBnClickedExit()
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 종료 시작", __LINE__);
 
 	KillTimer(SNAKE_GAME_TIMER);
+	KillTimer(SNAKE_GAME_MAKE_APPLE_TIMER);
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 종료", __LINE__);
 
 	CDialogEx::OnCancel();
