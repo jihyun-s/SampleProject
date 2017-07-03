@@ -59,7 +59,7 @@ bool Snake::MoveSnake(int X, int Y, APPLE_CLR c)
 	else if(c == GREEN) // 만약 이동한 칸에 초록사과가 있다면 몸길이를 줄여서 꼬리가 위치한 칸을 비워준다.( 즉, 몸길이가 줄어든다. 몸길이 그대로가 아님!)
 	{
 		vSnake.push_back(make_pair(X, Y));
-		vSnake.erase(vSnake.begin(), vSnake.begin() + 1);//원래 꼬리부분위치를 일단 비우고(위치가 움직였으니) 이동한 꼬리위치를 추가로 비운다. (몸길이 줄임)
+		vSnake.erase(vSnake.begin(), vSnake.begin() + 2);//원래 꼬리부분위치를 일단 비우고(위치가 움직였으니) 이동한 꼬리위치를 추가로 비운다. (몸길이 줄임)
 	}
 	else //c == NONECOLOR , 몸길이가 '그대로'여야함
 	{

@@ -45,16 +45,16 @@ Size Map::GetMapSize()
 // 차라리 아예 사과 만들때 컬러 지정 없이 항상 랜덤으로 만들도록 하는것은 어떨지??
 void Map::MakeApple() 
 {
-	Apple* pNewApple = new Apple;
-	pNewApple->CreateApple(sMapSize.x, sMapSize.y); //apple color는 현재 default로 random 생성하게 되어있음
+	Apple cNewApple;
+	cNewApple.CreateApple(sMapSize.x, sMapSize.y); //apple color는 현재 default로 random 생성하게 되어있음
 	
-	while (ExistApple(pNewApple->GetAppleX(), pNewApple->GetAppleY()))
-		pNewApple->CreateApple(sMapSize.x, sMapSize.y);
+	while (ExistApple(cNewApple.GetAppleX(), cNewApple.GetAppleY()))
+		cNewApple.CreateApple(sMapSize.x, sMapSize.y);
 
-	vApple.push_back(*pNewApple);
-	vMap[pNewApple->GetAppleX()][pNewApple->GetAppleY()] = 1;
+	vApple.push_back(cNewApple);
+	vMap[cNewApple.GetAppleX()][cNewApple.GetAppleY()] = 1;
 
-	TraceListbox(m_pDebugConsole, L"[%d][Map] MakeApple:x(%d),y(%d)", __LINE__, pNewApple->GetAppleX(), pNewApple->GetAppleY());
+	TraceListbox(m_pDebugConsole, L"[%d][Map] MakeApple:x(%d),y(%d)", __LINE__, cNewApple.GetAppleX(), cNewApple.GetAppleY());
 }
 
 bool Map::ExistApple(const int x, const int y, Apple** sGetApple)
