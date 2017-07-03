@@ -172,7 +172,7 @@ void CSnakeGameDlg::OnBnClickedBtnStart()
 	SetTimer(SNAKE_GAME_TIMER, 1000, NULL); // timer 
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
 
-	SetTimer(SNAKE_GAME_MAKE_APPLE_TIMER, 5000, NULL);
+	//SetTimer(SNAKE_GAME_MAKE_APPLE_TIMER, 5000, NULL);
 }
 
 
