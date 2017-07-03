@@ -32,18 +32,21 @@ bool SnakeGame::MoveStraight()
 	APPLE_CLR appleColor = NONECOLOR;
 	Point nextPos = pSnake->GetNextPosition();
 
+	bool bApple = false;
 	// ret1 : 벽에 충돌
 	// 벽에 충돌이어도 일단 이동시킴
 	if (!(ret1=pMap->DestroyWall(nextPos.x, nextPos.y)))
 	{
 		Apple* tmp = NULL;
-		bool bApple = pMap->ExistApple(nextPos.x, nextPos.y, &tmp);
+		bApple = pMap->ExistApple(nextPos.x, nextPos.y, &tmp);
 		if (bApple)
 			appleColor = tmp->GetAppleColor();		
 	}
 
 	// ret2 : 몸길이0 or self kill
-	if(ret2 = pSnake->MoveSnake(nextPos.x, nextPos.y, appleColor))
+	pSnake->MoveSnake(nextPos.x, nextPos.y, appleColor);
+
+	if(bApple)
 		pMap->DeleteApple(nextPos.x, nextPos.y);
 
 	return (ret1||!ret2)?false:true;
