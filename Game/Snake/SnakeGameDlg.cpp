@@ -195,10 +195,6 @@ void CSnakeGameDlg::OnBnClickedBtnRestart()
 	if (pSnakeGame)
 		delete pSnakeGame;
 	pSnakeGame = NULL;
-
-	SetTimer(SNAKE_GAME_TIMER, 1000, NULL); // timer 
-	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
-
 	
 #ifdef _DEBUG
 	pSnakeGame = new SnakeGame(&m_listmsg);
@@ -206,6 +202,8 @@ void CSnakeGameDlg::OnBnClickedBtnRestart()
 	pSnakeGame = new SnakeGame();
 #endif
 
+	SetTimer(SNAKE_GAME_TIMER, 1000, NULL); // timer 
+	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
 }
 
 
