@@ -24,6 +24,7 @@ private:
 	//CSnakeGameDocument *pDocument;
 protected:
 	CListBox m_listmsg;
+	BOOL m_bInit;
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 	virtual BOOL OnInitDialog();
 	DECLARE_MESSAGE_MAP()

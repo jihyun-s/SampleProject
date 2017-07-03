@@ -17,6 +17,7 @@ CSnakeGameDlg::CSnakeGameDlg(CWnd* pParent /*=NULL*/)
 : CDialogEx(CSnakeGameDlg::IDD, pParent)
 {
 	pSnakeGame = NULL;
+	m_bInit = FALSE;
 }
 
 CSnakeGameDlg::~CSnakeGameDlg()
@@ -139,7 +140,12 @@ void CSnakeGameDlg::OnTimer(UINT nIDEvent)
 	case SNAKE_GAME_TIMER:
 	{
 		TraceListbox(&m_listmsg, L"[%d][DLG] Snake ÀÌµ¿", __LINE__);
-		SetTimer(SNAKE_GAME_MAKE_APPLE_TIMER, 5000, NULL);
+		if (!m_bInit)
+		{
+			m_bInit = TRUE;
+			SetTimer(SNAKE_GAME_MAKE_APPLE_TIMER, 5000, NULL);
+		}
+
 		if (!pSnakeGame->MoveStraight())	// die
 		{
 				KillTimer(SNAKE_GAME_TIMER);
