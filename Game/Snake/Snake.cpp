@@ -88,9 +88,8 @@ bool Snake::SnakeSelfKill()
 	bool bSelfKill = false;
 	if (GetSize() == 1) return bSelfKill;
 
-	for (int i = 0; i < GetSize(); i++)
+	for (int i = 0; i < GetSize() - 1; i++)
 	{
-		// !!!!!!!bug!!!!!!!!!!수정필요
 		if ((vSnake[i].first == vSnake[GetSize() - 1].first) && (vSnake[i].second == vSnake[GetSize() - 1].second))
 		{
 			bSelfKill = true;
