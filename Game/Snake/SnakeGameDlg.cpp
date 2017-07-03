@@ -9,6 +9,7 @@
 
 // CSnakeGameDlg 대화 상자입니다.
 #define SNAKE_GAME_TIMER 9999
+#define SNAKE_GAME_MAKE_APPLE_TIMER 9998
 
 IMPLEMENT_DYNAMIC(CSnakeGameDlg, CDialogEx)
 
@@ -137,14 +138,21 @@ void CSnakeGameDlg::OnTimer(UINT nIDEvent)
 	{
 	case SNAKE_GAME_TIMER:
 	{
-							 TraceListbox(&m_listmsg, L"[%d][DLG] Snake 이동", __LINE__);
-
-							 if (!pSnakeGame->MoveStraight())	// die
-							 {
-								 KillTimer(SNAKE_GAME_TIMER);
-							 }
+		TraceListbox(&m_listmsg, L"[%d][DLG] Snake 이동", __LINE__);
+		SetTimer(SNAKE_GAME_MAKE_APPLE_TIMER, 5000, NULL);
+		if (!pSnakeGame->MoveStraight())	// die
+		{
+				KillTimer(SNAKE_GAME_TIMER);
+				KillTimer(SNAKE_GAME_MAKE_APPLE_TIMER);
+		 }
 	}
 		break;
+	case SNAKE_GAME_MAKE_APPLE_TIMER:
+	{
+		if (pSnakeGame)
+			pSnakeGame->MakeApple();
+		break;
+	}
 	default:
 		break;
 	}
@@ -157,6 +165,8 @@ void CSnakeGameDlg::OnBnClickedBtnStart()
 	// Snake game start
 	SetTimer(SNAKE_GAME_TIMER, 1000, NULL); // timer 
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
+
+	SetTimer(SNAKE_GAME_MAKE_APPLE_TIMER, 5000, NULL);
 }
 
 
@@ -165,7 +175,6 @@ void CSnakeGameDlg::OnBnClickedExit()
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 종료 시작", __LINE__);
 
 	KillTimer(SNAKE_GAME_TIMER);
-
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 종료", __LINE__);
 
 	CDialogEx::OnCancel();
@@ -176,6 +185,7 @@ void CSnakeGameDlg::OnBnClickedBtnRestart()
 {
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 재시작", __LINE__);
 	KillTimer(SNAKE_GAME_TIMER);
+	KillTimer(SNAKE_GAME_MAKE_APPLE_TIMER);
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 종료", __LINE__);
 	if (pSnakeGame)
 		delete pSnakeGame;
@@ -184,11 +194,13 @@ void CSnakeGameDlg::OnBnClickedBtnRestart()
 	SetTimer(SNAKE_GAME_TIMER, 1000, NULL); // timer 
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
 
+	
 #ifdef _DEBUG
 	pSnakeGame = new SnakeGame(&m_listmsg);
 #else
 	pSnakeGame = new SnakeGame();
 #endif
+
 }
 
 

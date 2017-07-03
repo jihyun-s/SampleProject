@@ -18,5 +18,6 @@ public:
 
 	bool MoveStraight();
 	void ChangDirection(Direction a_dir);
+	void MakeApple();
 };
 

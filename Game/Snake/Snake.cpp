@@ -73,7 +73,7 @@ bool Snake::MoveSnake(int X, int Y, APPLE_CLR c)
 	if (SnakeSelfKill())
 		return false;
 
-	TraceListbox(m_pDebugConsole, L"[%d][Snake] Success Move (%d,%d) color=%d", __LINE__, X, Y, c);
+	TraceListbox(m_pDebugConsole, L"[%d][Snake] Success Move (%d,%d) color=%d, size=%d", __LINE__, X, Y, c, vSnake.size());
 	return true;
 }
 

@@ -6,6 +6,8 @@ SnakeGame::SnakeGame()
 	pMap = new Map();
 	pSnake = new Snake();
 	nScore = 0;
+
+	pMap->MakeApple();
 }
 
 SnakeGame::~SnakeGame()
@@ -20,6 +22,8 @@ SnakeGame::SnakeGame(void* pDebugConsole)
 	pMap = new Map(pDebugConsole);
 	pSnake = new Snake(pDebugConsole);
 	nScore = 0;
+
+	pMap->MakeApple();
 }
 bool SnakeGame::MoveStraight()
 {
@@ -47,4 +51,9 @@ bool SnakeGame::MoveStraight()
 void SnakeGame::ChangDirection(Direction a_dir)
 {
 	pSnake->SetDir(a_dir);
+}
+
+void SnakeGame::MakeApple()
+{
+	pMap->MakeApple();
 }
