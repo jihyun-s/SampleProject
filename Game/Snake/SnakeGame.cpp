@@ -44,7 +44,7 @@ bool SnakeGame::MoveStraight()
 	}
 
 	// ret2 : ¸ö±æÀÌ0 or self kill
-	pSnake->MoveSnake(nextPos.x, nextPos.y, appleColor);
+	ret2 = pSnake->MoveSnake(nextPos.x, nextPos.y, appleColor);
 
 	if(bApple)
 		pMap->DeleteApple(nextPos.x, nextPos.y);
