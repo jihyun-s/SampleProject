@@ -52,6 +52,12 @@ bool Snake::MoveSnake(int X, int Y, APPLE_CLR c)
 
 	int nSize = vSnake.size();
 
+	if (SnakeSelfKill(X, Y))
+	{
+		TraceListbox(m_pDebugConsole, L"[%d][Error][Snake] self kill, size=%d", __LINE__, vSnake.size());
+		return false;
+	}
+
 	if (c == RED) //πÏ¿∫ ∏ˆ±Ê¿Ã∏¶ ¥√∑¡ ∏”∏Æ∏¶ ¥Ÿ¿Ωƒ≠ø° ¿ÃµøΩ√≈≤¥Ÿ.
 	{
 		vSnake.push_back(make_pair(X, Y));
@@ -72,32 +78,24 @@ bool Snake::MoveSnake(int X, int Y, APPLE_CLR c)
 		TraceListbox(m_pDebugConsole, L"[%d][Error][Snake] died, size=%d", __LINE__, vSnake.size());
 		return false;
 	}
-
-	if (SnakeSelfKill())
-	{
-		TraceListbox(m_pDebugConsole, L"[%d][Error][Snake] self kill, size=%d", __LINE__, vSnake.size());
-		return false;
-	}
 	
 	TraceListbox(m_pDebugConsole, L"[%d][Snake] Success Move (%d,%d) color=%d, size=%d", __LINE__, X, Y, c, vSnake.size());
 	return true;
 }
 
-bool Snake::SnakeSelfKill()
+bool Snake::SnakeSelfKill(int x, int y)
 {
 	bool bSelfKill = false;
 	if (GetSize() == 1) return bSelfKill;
 
-	for (int i = 0; i < GetSize() - 1; i++)
+	for (vector<pair<int, int>>::iterator it = vSnake.begin(); it != vSnake.end(); ++it)
 	{
-		if ((vSnake[i].first == vSnake[GetSize() - 1].first) && (vSnake[i].second == vSnake[GetSize() - 1].second))
+		if (it->first == x && it->second == y)
 		{
 			bSelfKill = true;
-			//TraceListbox(m_pDebugConsole, L"[%d][Error][Snake] SnakeSelfKill!!!!!",__LINE__);
 			break;
 		}
 	}
-
 	return bSelfKill;
 }
 

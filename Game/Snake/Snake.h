@@ -22,7 +22,7 @@ public:
 	const Point GetNextPosition();
 
 private:
-	bool SnakeSelfKill();								//새로 들어온 좌표가 이미 있는 좌표인지 검사 (스스로 몸에 부딪히는 경우인지 검사)
+	bool SnakeSelfKill(int x, int y);								//새로 들어온 좌표가 이미 있는 좌표인지 검사 (스스로 몸에 부딪히는 경우인지 검사)
 	void init();
 };
 
