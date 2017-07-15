@@ -20,6 +20,7 @@ public:
 	Direction SetDir(Direction NextDir);				//뱀 방향 set함수
 	bool MoveSnake(int X, int Y, APPLE_CLR c=NONECOLOR);			//뱀이 이동할 때 마다 호출, c에 따라 뱀 길이가 달라짐
 	const Point GetNextPosition();
+	const vector<pair<int, int>>* GetSnakePosition() const { return &vSnake; }
 
 private:
 	bool SnakeSelfKill(int x, int y);								//새로 들어온 좌표가 이미 있는 좌표인지 검사 (스스로 몸에 부딪히는 경우인지 검사)

@@ -1,12 +1,13 @@
 #pragma once
 #include "SnakeGame.h"
+#include "../Observer.h"
 //#include "SnakeGameView.h"
 //#include "SnakeGameDocument.h"
 #include "afxwin.h"
 
 // CSnakeGameDlg 대화 상자입니다.
 
-class CSnakeGameDlg : public CDialogEx
+class CSnakeGameDlg : public CDialogEx, public CObserver
 {
 	DECLARE_DYNAMIC(CSnakeGameDlg)
 
@@ -27,6 +28,7 @@ protected:
 	BOOL m_bInit;
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 	virtual BOOL OnInitDialog();
+	virtual void Update();
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();

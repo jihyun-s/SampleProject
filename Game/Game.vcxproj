@@ -102,15 +102,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameController.h" />
     <ClInclude Include="GameDlg.h" />
+    <ClInclude Include="Observer.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Snake\Apple.h" />
     <ClInclude Include="Snake\COMMON_TYPES.h" />
     <ClInclude Include="Snake\Map.h" />
     <ClInclude Include="Snake\Snake.h" />
     <ClInclude Include="Snake\SnakeGame.h" />
-    <ClInclude Include="Snake\SnakeGameController.h" />
+    <ClInclude Include="Snake\SnakeGameComponent.h" />
     <ClInclude Include="Snake\SnakeGameDlg.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -118,13 +118,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameController.cpp" />
     <ClCompile Include="GameDlg.cpp" />
+    <ClCompile Include="Observer.cpp" />
     <ClCompile Include="Snake\Apple.cpp" />
     <ClCompile Include="Snake\Map.cpp" />
     <ClCompile Include="Snake\Snake.cpp" />
     <ClCompile Include="Snake\SnakeGame.cpp" />
-    <ClCompile Include="Snake\SnakeGameController.cpp" />
+    <ClCompile Include="Snake\SnakeGameComponent.cpp" />
     <ClCompile Include="Snake\SnakeGameDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

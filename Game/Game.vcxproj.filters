@@ -39,9 +39,6 @@
     <ClInclude Include="Resource.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="GameController.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="utils.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -57,14 +54,17 @@
     <ClInclude Include="Snake\SnakeGame.h">
       <Filter>헤더 파일\SnakeGame</Filter>
     </ClInclude>
-    <ClInclude Include="Snake\SnakeGameController.h">
-      <Filter>헤더 파일\SnakeGame</Filter>
-    </ClInclude>
     <ClInclude Include="Snake\SnakeGameDlg.h">
       <Filter>헤더 파일\SnakeGame</Filter>
     </ClInclude>
     <ClInclude Include="Snake\COMMON_TYPES.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Snake\SnakeGameComponent.h">
+      <Filter>헤더 파일\SnakeGame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -75,9 +75,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="GameController.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="utils.cpp">
@@ -95,10 +92,13 @@
     <ClCompile Include="Snake\SnakeGame.cpp">
       <Filter>소스 파일\SnakeGame</Filter>
     </ClCompile>
-    <ClCompile Include="Snake\SnakeGameController.cpp">
+    <ClCompile Include="Snake\SnakeGameDlg.cpp">
       <Filter>소스 파일\SnakeGame</Filter>
     </ClCompile>
-    <ClCompile Include="Snake\SnakeGameDlg.cpp">
+    <ClCompile Include="Observer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Snake\SnakeGameComponent.cpp">
       <Filter>소스 파일\SnakeGame</Filter>
     </ClCompile>
   </ItemGroup>

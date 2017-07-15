@@ -2,22 +2,28 @@
 #include "Map.h"
 #include "Snake.h"
 
-class SnakeGame
+class SnakeGame : public CSnakeGameComponent
 {
 private:
 	Map *pMap;
 	Snake *pSnake;
 	int nScore;
 
+	virtual void SetObserver(CObserver* a_observer);
+
 public:
 	explicit SnakeGame();
+	explicit SnakeGame(CObserver* pObserver);
 #if _DEBUG
-	explicit SnakeGame(void* pDebugConsole);
+	explicit SnakeGame(CObserver* pObserver, void* pDebugConsole);
 #endif
 	~SnakeGame();
 
 	bool MoveStraight();
 	void ChangDirection(Direction a_dir);
 	void MakeApple();
+
+	const Map* GetMap() const { return pMap; }
+	const Snake* GetSnake() const { return pSnake; }
 };
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "Apple.h"
+#include "SnakeGameComponent.h"
 #include <vector>
 
 using namespace std;
@@ -26,6 +27,6 @@ public:
 	bool ExistApple(const int x, const int y, Apple** sGetApple=NULL);
 	bool DeleteApple(const int x, const int y);		// 예외처리를 위한 리턴 bool
 	bool DestroyWall(const int x, const int y) const;
-	
+	const vector<Apple>* GetApplePosition() const { return &vApple; }
 };
 

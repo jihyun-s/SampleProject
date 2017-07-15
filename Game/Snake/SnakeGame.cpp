@@ -10,6 +10,16 @@ SnakeGame::SnakeGame()
 	pMap->MakeApple();
 }
 
+SnakeGame::SnakeGame(CObserver* pObserver)
+{
+	pMap = new Map();
+	pSnake = new Snake();
+	nScore = 0;
+
+	this->SetObserver(pObserver);
+	pMap->MakeApple();
+}
+
 SnakeGame::~SnakeGame()
 {
 	if (pMap)
@@ -17,12 +27,13 @@ SnakeGame::~SnakeGame()
 	if (pSnake)
 		delete pSnake;
 }
-SnakeGame::SnakeGame(void* pDebugConsole)
+SnakeGame::SnakeGame(CObserver* pObserver, void* pDebugConsole)
 {
 	pMap = new Map(pDebugConsole);
 	pSnake = new Snake(pDebugConsole);
 	nScore = 0;
 
+	this->SetObserver(pObserver);
 	pMap->MakeApple();
 }
 bool SnakeGame::MoveStraight()
@@ -49,6 +60,8 @@ bool SnakeGame::MoveStraight()
 	if(bApple)
 		pMap->DeleteApple(nextPos.x, nextPos.y);
 
+	m_observer->Update();
+
 	return (ret1||!ret2)?false:true;
 }
 
@@ -60,4 +73,9 @@ void SnakeGame::ChangDirection(Direction a_dir)
 void SnakeGame::MakeApple()
 {
 	pMap->MakeApple();
+}
+
+void SnakeGame::SetObserver(CObserver* a_observer)
+{
+	m_observer = a_observer;
 }

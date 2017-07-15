@@ -18,9 +18,9 @@ public:
 	~Apple();
 	/*Apple**/ 
 	void CreateApple(int nMapSizeX, int nMapSizeY, APPLE_CLR c=NONECOLOR); // 불필요한 apple* return
-	const int GetAppleX() { return sApplePosition.x; }
-	const int GetAppleY() { return sApplePosition.y; }
-	const APPLE_CLR GetAppleColor() { return eColor; }
+	const int GetAppleX() const { return sApplePosition.x; }
+	const int GetAppleY() const { return sApplePosition.y; }
+	const APPLE_CLR GetAppleColor() const { return eColor; }
 
 };
 
