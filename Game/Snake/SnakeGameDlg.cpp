@@ -11,6 +11,9 @@
 #define SNAKE_GAME_TIMER 9999
 #define SNAKE_GAME_MAKE_APPLE_TIMER 9998
 
+#define SNAKE_GAME_MOVE_PERIOD 1000
+#define SNAKE_GAME_MAKE_APPLE_PERIOD 5500
+
 IMPLEMENT_DYNAMIC(CSnakeGameDlg, CDialogEx)
 
 CSnakeGameDlg::CSnakeGameDlg(CWnd* pParent /*=NULL*/)
@@ -143,7 +146,7 @@ void CSnakeGameDlg::OnTimer(UINT nIDEvent)
 		if (!m_bInit)
 		{
 			m_bInit = TRUE;
-			SetTimer(SNAKE_GAME_MAKE_APPLE_TIMER, 5000, NULL);
+			SetTimer(SNAKE_GAME_MAKE_APPLE_TIMER, SNAKE_GAME_MAKE_APPLE_PERIOD, NULL);
 		}
 
 		if (!pSnakeGame->MoveStraight())	// die
@@ -169,7 +172,7 @@ void CSnakeGameDlg::OnBnClickedBtnStart()
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 시작", __LINE__);
 
 	// Snake game start
-	SetTimer(SNAKE_GAME_TIMER, 1000, NULL); // timer 
+	SetTimer(SNAKE_GAME_TIMER, SNAKE_GAME_MOVE_PERIOD, NULL); // timer 
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
 }
 
@@ -202,7 +205,7 @@ void CSnakeGameDlg::OnBnClickedBtnRestart()
 	pSnakeGame = new SnakeGame(this);
 #endif
 
-	SetTimer(SNAKE_GAME_TIMER, 1000, NULL); // timer 
+	SetTimer(SNAKE_GAME_TIMER, SNAKE_GAME_MOVE_PERIOD, NULL); // timer 
 	TraceListbox(&m_listmsg, L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
 }
 

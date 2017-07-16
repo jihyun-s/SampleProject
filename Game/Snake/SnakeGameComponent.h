@@ -9,7 +9,7 @@ public:
 	explicit CSnakeGameComponent();
 	virtual ~CSnakeGameComponent();
 
-	void notifyObserver();
+	void NotifyObserver();
 	virtual void SetObserver(CObserver* a_observer) = 0;
 };
 

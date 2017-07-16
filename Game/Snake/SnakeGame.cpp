@@ -60,7 +60,7 @@ bool SnakeGame::MoveStraight()
 	if(bApple)
 		pMap->DeleteApple(nextPos.x, nextPos.y);
 
-	m_observer->Update();
+	NotifyObserver();
 
 	return (ret1||!ret2)?false:true;
 }
@@ -73,6 +73,8 @@ void SnakeGame::ChangDirection(Direction a_dir)
 void SnakeGame::MakeApple()
 {
 	pMap->MakeApple();
+
+	NotifyObserver();
 }
 
 void SnakeGame::SetObserver(CObserver* a_observer)

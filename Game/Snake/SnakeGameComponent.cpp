@@ -8,8 +8,8 @@ CSnakeGameComponent::~CSnakeGameComponent()
 {
 }
 
-void CSnakeGameComponent::notifyObserver()
+void CSnakeGameComponent::NotifyObserver()
 {
-	if (!m_observer)
+	if (m_observer)
 		m_observer->Update();
 }
