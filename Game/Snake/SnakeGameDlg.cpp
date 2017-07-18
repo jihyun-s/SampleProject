@@ -231,7 +231,8 @@ void CSnakeGameDlg::OnPaint()
 
 	// draw apple
 	CBrush RedAppleBrush(RGB(255, 0, 0));
-	CBrush GreenAppleBrush(RGB(0, 255, 0));
+	CBrush GreenAppleBrush(RGB(34, 177, 76));
+	CPen AppleBranch(PS_SOLID, 4, RGB(128, 64, 0));
 	
 	const vector<Apple>* pApple = pSnakeGame->GetMap()->GetApplePosition();
 	vector<Apple>::const_iterator itr_apple = pApple->begin();
@@ -240,12 +241,40 @@ void CSnakeGameDlg::OnPaint()
 		const int nX = (*itr_apple).GetAppleX();
 		const int nY = (*itr_apple).GetAppleY();
 		const APPLE_CLR nColor = (*itr_apple).GetAppleColor();
-		if(nColor == RED)
-			dc.SelectObject(&RedAppleBrush);
-		else if(nColor == GREEN)
-			dc.SelectObject(&GreenAppleBrush);
 
-		dc.Ellipse(r.left + nX*nSize, r.top + nY*nSize, r.left + nX*nSize+nSize, r.top + nY*nSize+nSize);
+		if (nColor == RED)
+			dc.SelectObject(&RedAppleBrush);
+		else if (nColor == GREEN)
+			dc.SelectObject(&GreenAppleBrush);
+		
+		int nLeft = r.left + nX*nSize;
+		int nTop = r.top + nY*nSize;
+		int nRight = r.left + nX*nSize + nSize;
+		int nBottom = r.top + nY*nSize + nSize;
+
+		int nCenterX = nLeft + (nSize / 2);
+		int nCenterY = nTop + (nSize / 2);
+
+		int nSmallTop = nTop + (nSize / 4);
+		int nSmallBottom = nBottom - (nSize / 4);
+
+		dc.BeginPath();
+		dc.MoveTo(nLeft, nCenterY);
+		dc.ArcTo(nLeft, nTop, nRight, nBottom, nLeft, nCenterY, nRight, nCenterY); //countclockwise
+		dc.ArcTo(nCenterX, nSmallTop, nRight, nSmallBottom, nRight, nCenterY, nCenterX, nCenterY); //countclockwise
+		dc.ArcTo(nLeft, nSmallTop, nCenterX, nSmallBottom, nCenterX, nCenterY, nLeft, nCenterY); //countclockwise
+		dc.EndPath();
+		dc.FillPath();
+
+		dc.SelectObject(&AppleBranch);
+		dc.MoveTo(nCenterX, nCenterY);
+		dc.LineTo(nCenterX + 5, nTop + 5);
+		dc.SelectObject(&BGPen);
+
+		CBrush TempBrush(RGB(255, 255, 255));
+		dc.SelectObject(&TempBrush);
+		dc.Ellipse(nLeft + 2, nCenterY - 4, nLeft + 8, nCenterY + 4);
+
 	}
 
 	// draw snake
