@@ -27,7 +27,7 @@ int Snake::GetSize()
 	return vSnake.size();
 }
 
-Direction Snake::GetDir()
+const Direction Snake::GetDir() const
 {
 	return Dir;
 }

@@ -280,48 +280,111 @@ void CSnakeGameDlg::OnPaint()
 	// draw snake
 	const vector<pair<int, int>>* pSnake = pSnakeGame->GetSnake()->GetSnakePosition();
 	vector<pair<int,int>>::const_reverse_iterator itr_snake = pSnake->rbegin();
+
+	const Direction CurrentDir = pSnakeGame->GetSnake()->GetDir();
+	double degrees = 0;
+	if (CurrentDir == RIGHT)
+		degrees = 90;
+	if (CurrentDir == DOWN)
+		degrees = 180;
+	if (CurrentDir == LEFT)
+		degrees = 270;
 	
 	// draw snake head
 	if (itr_snake != pSnake->rend())
 	{
-		CBrush SnakeHeadBrush(RGB(0, 191, 231));
+		CPen SnakeTongue(PS_SOLID, 2, RGB(255, 128, 128));
+		CBrush SnakeHeadBrush(RGB(0, 128, 128));
+		CBrush SnakeEye(RGB(0, 0, 0));
+		CBrush SnakeEye2(RGB(255, 255, 255));
+		CPen EyeBrow(PS_SOLID, 2, RGB(0, 0, 0));
+		
+		int nHLeft = r.left + (*itr_snake).first*nSize;
+		int nHTop = r.top + (*itr_snake).second*nSize;
+		int nHRight = r.left + (*itr_snake).first*nSize + nSize;
+		int nHBottom = r.top + (*itr_snake).second*nSize + nSize;
+		int nCenterX = nHLeft + (nSize / 2);
+		int nCenterY = nHTop + (nSize / 2);
+
+		XFORM xOldForm, xNewForm;
+		dc.GetWorldTransform(&xOldForm);
+		SetGraphicsMode(dc, GM_ADVANCED);
+		double radian = (double)degrees / 180. * 3.1415926;
+		xNewForm.eM11 = (float)cos(radian);
+		xNewForm.eM12 = (float)sin(radian);
+		xNewForm.eM21 = (float)-sin(radian);
+		xNewForm.eM22 = (float)cos(radian);
+		xNewForm.eDx = (float)(nCenterX - cos(radian)*nCenterX + sin(radian)*nCenterY);
+		xNewForm.eDy = (float)(nCenterY - cos(radian)*nCenterY - sin(radian)*nCenterX);
+		SetWorldTransform(dc, &xNewForm);
+		
+		//혀
+		dc.SelectObject(&SnakeTongue);
+		dc.MoveTo(nCenterX + 3, nHTop + 3);
+		dc.LineTo(nCenterX - 3, nHTop - 3);
+		dc.LineTo(nCenterX + 3, nHTop - 5);
+		dc.LineTo(nCenterX - 3, nHTop - 7);
+		dc.SelectObject(&BGPen);
+
+		//머리
 		dc.SelectObject(&SnakeHeadBrush);
-		dc.Ellipse(r.left + (*itr_snake).first*nSize, r.top + (*itr_snake).second*nSize, r.left + (*itr_snake).first*nSize + nSize, r.top + (*itr_snake).second*nSize + nSize);
-	
+		dc.Ellipse(nHLeft, nHTop, nHRight, nHBottom);
+
+		//눈s
+		CPoint LeftEyePoint(nCenterX - (nSize / 4), nCenterY - (nSize / 4) + 2);
+		CPoint RightEyePoint(nCenterX + (nSize / 4), nCenterY - (nSize / 4) + 2);
+
+		dc.SelectObject(&EyeBrow);
+		dc.MoveTo(LeftEyePoint.x - 5, LeftEyePoint.y + 11);
+		dc.LineTo(LeftEyePoint.x + 5, LeftEyePoint.y + 8);
+		dc.MoveTo(RightEyePoint.x - 5, RightEyePoint.y + 8);
+		dc.LineTo(RightEyePoint.x + 5, RightEyePoint.y + 11);
+		dc.SelectObject(&BGPen);
+
+		dc.SelectObject(&SnakeEye2);
+		dc.Ellipse(LeftEyePoint.x - 5, LeftEyePoint.y - 5, LeftEyePoint.x + 5, LeftEyePoint.y + 5);
+		dc.Ellipse(RightEyePoint.x - 5, RightEyePoint.y - 5, RightEyePoint.x + 5, RightEyePoint.y + 5);
+
+		dc.SelectObject(&SnakeEye);
+		dc.Ellipse(LeftEyePoint.x - 4, LeftEyePoint.y - 4, LeftEyePoint.x + 4, LeftEyePoint.y + 4);
+		dc.Ellipse(RightEyePoint.x - 4, RightEyePoint.y - 4, RightEyePoint.x + 4, RightEyePoint.y + 4);
+
+		//코
+		CPoint LeftNosePoint(nCenterX - 2, nCenterY - (nSize/3));
+		CPoint RightNosePoint(nCenterX + 2, nCenterY - (nSize/3));
+		dc.Rectangle(LeftNosePoint.x - 1, LeftNosePoint.y - 1, LeftNosePoint.x + 1, LeftNosePoint.y + 1);
+		dc.Rectangle(RightNosePoint.x - 1, RightNosePoint.y - 1, RightNosePoint.x + 1, RightNosePoint.y + 1);
+
+		dc.SelectObject(&BGBrush);
+		SetWorldTransform(dc, &xOldForm);
+		SetGraphicsMode(dc, GM_COMPATIBLE);
+
+
+
+
 		// draw snake body 
-		CBrush SnakeBrush(RGB(200, 191, 231));
-		dc.SelectObject(&SnakeBrush);
+		CBrush SnakeBrush(RGB(0, 128, 128));
+		CBrush SnakeBrush2(RGB(170, 197, 165));
+			
 		for (++itr_snake; itr_snake != pSnake->rend(); ++itr_snake)
 		{
 			const int nX = (*itr_snake).first;
 			const int nY = (*itr_snake).second;
 
-			dc.Ellipse(r.left + nX*nSize, r.top + nY*nSize, r.left + nX*nSize + nSize, r.top + nY*nSize + nSize);
+			int nLeft = r.left + nX*nSize;// -4;
+			int nTop = r.top + nY*nSize;// -4;
+			int nRight = r.left + nX*nSize + nSize;// +4;
+			int nBottom = r.top + nY*nSize + nSize;// +4;
+
+			dc.SelectObject(&SnakeBrush);
+			dc.Ellipse(nLeft, nTop, nRight, nBottom);
+			dc.SelectObject(&SnakeBrush2);
+			dc.Ellipse(nLeft + 4, nTop + 4, nRight - 4, nBottom - 4);
+			dc.SelectObject(&SnakeBrush);
+			dc.Ellipse(nLeft + 7, nTop + 7, nRight - 7, nBottom - 7);
+			dc.SelectObject(&BGBrush);
 		}
 	}
-	
-#if 0
-	int nLEFT = r.left+4;
-	int nTOP = r.top+4;
-
-	int nSize = (r.right - r.left)/10;
-	CBrush SnakeBrush(RGB(200,191,231));
-	dc.SelectObject(&SnakeBrush);
-
-	int nTmp = 0;
-	for (int i = 0; i < 10; i++)
-	{
-		dc.Ellipse(nLEFT + nTmp, nTOP, nLEFT + (nSize*(i + 1)), nTOP + nSize);
-		nTmp += nSize;
-	}
-#endif
-
-#if 0
-	// 레스터 오퍼레이션을 R2_XORPEN으로 설정
-	dc.SetROP2(R2_XORPEN);
-	dc.SelectStockObject(GRAY_BRUSH);
-	dc.Ellipse(r);
-#endif
 }
 
 void CSnakeGameDlg::Update()

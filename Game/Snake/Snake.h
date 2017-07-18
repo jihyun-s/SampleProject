@@ -16,7 +16,7 @@ public:
 	Snake(void* pDebugConsole);
 #endif
 	int GetSize();										//뱀 길이 get함수
-	Direction GetDir();									//뱀 방향 get함수
+	const Direction GetDir() const;									//뱀 방향 get함수
 	Direction SetDir(Direction NextDir);				//뱀 방향 set함수
 	bool MoveSnake(int X, int Y, APPLE_CLR c=NONECOLOR);			//뱀이 이동할 때 마다 호출, c에 따라 뱀 길이가 달라짐
 	const Point GetNextPosition();
