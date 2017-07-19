@@ -1,13 +1,13 @@
 #pragma once
+
+#include "afxwin.h"
 #include "SnakeGame.h"
 #include "../Observer.h"
-//#include "SnakeGameView.h"
-//#include "SnakeGameDocument.h"
-#include "afxwin.h"
+#include "SnakeDebuggingModule.h"
 
 // CSnakeGameDlg 대화 상자입니다.
 
-class CSnakeGameDlg : public CDialogEx, public CObserver
+class CSnakeGameDlg : public CDialogEx, public CObserver, public CSnakeDebuggingModule
 {
 	DECLARE_DYNAMIC(CSnakeGameDlg)
 
@@ -20,15 +20,13 @@ public:
 	enum { IDD = IDD_GAME_SNAKE };
 private:
 	SnakeGame *pSnakeGame;
-	//CCreateContext pContext;
-	//CSnakeGameView *pMapView;
-	//CSnakeGameDocument *pDocument;
 protected:
-	CListBox m_listmsg;
+	//CListBox m_listmsg;
 	BOOL m_bInit;
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 	virtual BOOL OnInitDialog();
-	virtual void Update();
+	virtual void UpdateUI();
+	virtual void UpdateScore(int a_nScore);
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();

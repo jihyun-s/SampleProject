@@ -4,12 +4,13 @@
 
 class SnakeGame : public CSnakeGameComponent
 {
-private:
+protected:
 	Map *pMap;
 	Snake *pSnake;
 	int nScore;
 
 	virtual void SetObserver(CObserver* a_observer);
+	void IncreaseGameScore(APPLE_CLR a_nColor = NONECOLOR);
 
 public:
 	explicit SnakeGame();

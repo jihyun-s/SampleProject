@@ -109,6 +109,7 @@
     <ClInclude Include="Snake\COMMON_TYPES.h" />
     <ClInclude Include="Snake\Map.h" />
     <ClInclude Include="Snake\Snake.h" />
+    <ClInclude Include="Snake\SnakeDebuggingModule.h" />
     <ClInclude Include="Snake\SnakeGame.h" />
     <ClInclude Include="Snake\SnakeGameComponent.h" />
     <ClInclude Include="Snake\SnakeGameDlg.h" />
@@ -123,6 +124,7 @@
     <ClCompile Include="Snake\Apple.cpp" />
     <ClCompile Include="Snake\Map.cpp" />
     <ClCompile Include="Snake\Snake.cpp" />
+    <ClCompile Include="Snake\SnakeDebuggingModule.cpp" />
     <ClCompile Include="Snake\SnakeGame.cpp" />
     <ClCompile Include="Snake\SnakeGameComponent.cpp" />
     <ClCompile Include="Snake\SnakeGameDlg.cpp" />

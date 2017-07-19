@@ -1,6 +1,4 @@
 #include "Map.h"
-#include "../stdafx.h"
-#include "../utils.h"
 
 Map::Map() : sMapSize(MAP_DEFAULT, MAP_DEFAULT)
 {
@@ -12,8 +10,9 @@ Map::Map(const int x, const int y) : sMapSize(x, y)
 	Init(x, y);
 }
 
-Map::Map(void *pDebugConsole) : sMapSize(MAP_DEFAULT, MAP_DEFAULT), m_pDebugConsole(pDebugConsole)
+Map::Map(void *pDebugConsole) : sMapSize(MAP_DEFAULT, MAP_DEFAULT)
 {
+	SetDebugConsole(pDebugConsole);
 	Init();
 }
 
@@ -25,7 +24,7 @@ void Map::Init(int x, int y)
 		vMap.push_back(element);
 	}
 
-	TraceListbox(m_pDebugConsole, L"[%d][Map] init:x(%d),y(%d)", __LINE__, x, y);
+	Trace(L"[%d][Map] init:x(%d),y(%d)", __LINE__, x, y);
 }
 
 Map::~Map()
@@ -54,7 +53,7 @@ void Map::MakeApple()
 	vApple.push_back(cNewApple);
 	vMap[cNewApple.GetAppleX()][cNewApple.GetAppleY()] = 1;
 
-	TraceListbox(m_pDebugConsole, L"[%d][Map] MakeApple:x(%d),y(%d), color(%d)", __LINE__, cNewApple.GetAppleX(), cNewApple.GetAppleY(), cNewApple.GetAppleColor());
+	Trace(L"[%d][Map] MakeApple:x(%d),y(%d), color(%d)", __LINE__, cNewApple.GetAppleX(), cNewApple.GetAppleY(), cNewApple.GetAppleColor());
 }
 
 bool Map::ExistApple(const int x, const int y, Apple** sGetApple)
@@ -65,7 +64,7 @@ bool Map::ExistApple(const int x, const int y, Apple** sGetApple)
 		if (it->GetAppleX() == x && it->GetAppleY() == y)
 		{
 			if(sGetApple!=NULL) *sGetApple = &(*it);
-			TraceListbox(m_pDebugConsole, L"[%d][Map] ExistApple:x(%d),y(%d)", __LINE__, x, y);
+			Trace(L"[%d][Map] ExistApple:x(%d),y(%d)", __LINE__, x, y);
 			return true;
 		}
 	}
@@ -81,7 +80,7 @@ bool Map::DeleteApple(const int x, const int y)
 		if (it->GetAppleX() == x && it->GetAppleY() == y)
 		{
 			vApple.erase(it); 
-			TraceListbox(m_pDebugConsole, L"[%d][Map] DeletetApple:x(%d),y(%d)", __LINE__, x, y);
+			Trace(L"[%d][Map] DeletetApple:x(%d),y(%d)", __LINE__, x, y);
 			return true;
 		}
 	}
@@ -93,7 +92,7 @@ bool Map::DestroyWall(const int x, const int y) const
 {
 	if (x < 0 || x >= sMapSize.x || y < 0 || y >= sMapSize.y) // snake crash from wall
 	{
-		TraceListbox(m_pDebugConsole, L"[%d][Error][Map] DestroyWall!!!!!!!!!!!", __LINE__);
+		Trace(L"[%d][Error][Map] DestroyWall!!!!!!!!!!!", __LINE__);
 		return true;
 	}
 	else
