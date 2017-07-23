@@ -245,7 +245,7 @@ void CSnakeGameDlg::OnPaint()
 	dc.SelectObject(&BGBrush);
 	dc.Rectangle(r);
 #endif //NOT_USE_GDIPLUS
-	int nSize = (r.right - r.left) / 10.0;
+	int nSize = (r.right - r.left) / 10;
 
 	if (pSnakeGame)
 	{
@@ -369,14 +369,12 @@ void CSnakeGameDlg::OnPaint()
 				dc.SelectObject(&BGBrush);
 #else
 				Gdiplus::SolidBrush GDIBrush_SnakeBody1(Color(0, 128, 128));
-				//Gdiplus::SolidBrush GDIBrush_SnakeBody2(Color(170, 197, 165));
-				Gdiplus::Pen GDIPen_SnakeBody2(Color(170, 197, 165), 3);
+				Gdiplus::SolidBrush GDIBrush_SnakeBody2(Color(170, 197, 165));
 
 				//dc.Ellipse(nLeft, nTop, nRight, nBottom);
 				memDC.FillEllipse(&GDIBrush_SnakeBody1, nLeft, nTop, nBODYSIZE_X, nBODYSIZE_Y);
-				memDC.DrawEllipse(&GDIPen_SnakeBody2, nLeft + 4, nTop + 4, nBODYSIZE_X - 8, nBODYSIZE_Y - 8);
-				//memDC.FillEllipse(&GDIBrush_SnakeBody2, nLeft + 4, nTop + 4, nBODYSIZE_X - 8, nBODYSIZE_Y - 8);
-				//memDC.FillEllipse(&GDIBrush_SnakeBody1, nLeft + 7, nTop + 7, nBODYSIZE_X - 14, nBODYSIZE_Y - 14);
+				memDC.FillEllipse(&GDIBrush_SnakeBody2, nLeft + 4, nTop + 4, nBODYSIZE_X - 8, nBODYSIZE_Y - 8);
+				memDC.FillEllipse(&GDIBrush_SnakeBody1, nLeft + 7, nTop + 7, nBODYSIZE_X - 14, nBODYSIZE_Y - 14);
 
 #endif//NOT_USE_GDIPLUS
 
