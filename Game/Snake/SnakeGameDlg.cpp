@@ -84,7 +84,6 @@ BEGIN_MESSAGE_MAP(CSnakeGameDlg, CDialogEx)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDD_BTN_START, &CSnakeGameDlg::OnBnClickedBtnStart)
 	ON_BN_CLICKED(IDEXIT, &CSnakeGameDlg::OnBnClickedExit)
-	ON_BN_CLICKED(IDD_BTN_RESTART, &CSnakeGameDlg::OnBnClickedBtnRestart)
 	ON_WM_PAINT()
 //	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
@@ -131,12 +130,12 @@ BOOL CSnakeGameDlg::OnInitDialog()
 	}
 	pMapView->RedrawWindow();
 #endif
-
+/*
 #ifdef _DEBUG
 	pSnakeGame = new SnakeGame(this, GetDlgItem(IDC_LIST_SNAKE));
 #else
 	pSnakeGame = new SnakeGame(this);
-#endif
+#endif*/
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -180,8 +179,25 @@ void CSnakeGameDlg::OnTimer(UINT nIDEvent)
 void CSnakeGameDlg::OnBnClickedBtnStart()
 {
 	TraceListbox(L"[%d][DLG] Snake Game 시작", __LINE__);
+	TraceListbox(L"[%d][DLG] Snake Game 타이머 종료", __LINE__);
+	KillTimer(SNAKE_GAME_TIMER);
+	KillTimer(SNAKE_GAME_MAKE_APPLE_TIMER);
+
+	if (pSnakeGame)
+	{
+		delete pSnakeGame;
+		pSnakeGame = NULL;
+	}
+	
+#ifdef _DEBUG
+	pSnakeGame = new SnakeGame(this, GetDlgItem(IDC_LIST_SNAKE));
+#else
+	pSnakeGame = new SnakeGame(this);
+#endif
+	Invalidate();
 
 	// Snake game start
+	m_bInit = FALSE;
 	SetTimer(SNAKE_GAME_TIMER, SNAKE_GAME_MOVE_PERIOD, NULL); // timer 
 	TraceListbox(L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
 }
@@ -197,31 +213,6 @@ void CSnakeGameDlg::OnBnClickedExit()
 
 	CDialogEx::OnCancel();
 }
-
-
-void CSnakeGameDlg::OnBnClickedBtnRestart()
-{
-	TraceListbox(L"[%d][DLG] Snake Game 재시작", __LINE__);
-	KillTimer(SNAKE_GAME_TIMER);
-	KillTimer(SNAKE_GAME_MAKE_APPLE_TIMER);
-	TraceListbox(L"[%d][DLG] Snake Game 타이머 종료", __LINE__);
-	if (pSnakeGame)
-		delete pSnakeGame;
-	pSnakeGame = NULL;
-	
-#ifdef _DEBUG
-	pSnakeGame = new SnakeGame(this, GetDlgItem(IDC_LIST_SNAKE));
-#else
-	pSnakeGame = new SnakeGame(this);
-#endif
-
-	m_bInit = FALSE;
-	SetTimer(SNAKE_GAME_TIMER, SNAKE_GAME_MOVE_PERIOD, NULL); // timer 
-	TraceListbox(L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
-
-	Invalidate();
-}
-
 
 void CSnakeGameDlg::OnPaint()
 {
