@@ -322,8 +322,7 @@ void CSnakeGameDlg::OnPaint()
 		// draw snake
 		const vector<pair<int, int>>* pSnake = pSnakeGame->GetSnake()->GetSnakePosition();
 		vector<pair<int, int>>::const_reverse_iterator itr_snake = pSnake->rbegin();
-		const pair<int, int> pSnakeHead = *itr_snake;
-
+		
 		const Direction CurrentDir = pSnakeGame->GetSnake()->GetDir();
 		double degrees = 0;
 		if (CurrentDir == RIGHT)
@@ -335,6 +334,8 @@ void CSnakeGameDlg::OnPaint()
 
 		if (itr_snake != pSnake->rend())
 		{
+			const pair<int, int> pSnakeHead = *itr_snake;
+
 			// draw snake body 
 			for (++itr_snake; itr_snake != pSnake->rend(); ++itr_snake)
 			{
