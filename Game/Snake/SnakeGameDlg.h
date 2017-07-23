@@ -33,7 +33,6 @@ public:
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnBnClickedBtnStart();
 	afx_msg void OnBnClickedExit();
-	afx_msg void OnBnClickedBtnRestart();
 	CStatic m_Map;
 	afx_msg void OnPaint();
 };
