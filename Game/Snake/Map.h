@@ -2,11 +2,11 @@
 #include "Apple.h"
 #include "SnakeGameComponent.h"
 #include <vector>
-#include "SnakeDebuggingModule.h"
+#include "../DebuggingModule.h"
 using namespace std;
 #define MAP_DEFAULT	10
 
-class Map : public CSnakeDebuggingModule
+class Map : public CDebuggingModule
 {
 private:
 	Size sMapSize;

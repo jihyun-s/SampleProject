@@ -104,7 +104,7 @@ BOOL CSnakeGameDlg::OnInitDialog()
 	this->GetWindowRect(&r);
 	this->SetWindowPos(NULL, r.left, r.top, r.right - r.left, (r.bottom - r.top) - listbottom, 0);
 #endif
-	Trace(L"[%d][DLG] Snake Dialog 생성", __LINE__);
+	TraceListbox(L"[%d][DLG] Snake Dialog 생성", __LINE__);
 
 #if 0 // View Test2
 	pContext.m_pNewViewClass = RUNTIME_CLASS(CSnakeGameView);
@@ -152,7 +152,7 @@ void CSnakeGameDlg::OnTimer(UINT nIDEvent)
 	{
 	case SNAKE_GAME_TIMER:
 	{
-		Trace(L"[%d][DLG] Snake 이동", __LINE__);
+		TraceListbox(L"[%d][DLG] Snake 이동", __LINE__);
 		if (!m_bInit)
 		{
 			m_bInit = TRUE;
@@ -179,21 +179,21 @@ void CSnakeGameDlg::OnTimer(UINT nIDEvent)
 
 void CSnakeGameDlg::OnBnClickedBtnStart()
 {
-	Trace(L"[%d][DLG] Snake Game 시작", __LINE__);
+	TraceListbox(L"[%d][DLG] Snake Game 시작", __LINE__);
 
 	// Snake game start
 	SetTimer(SNAKE_GAME_TIMER, SNAKE_GAME_MOVE_PERIOD, NULL); // timer 
-	Trace(L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
+	TraceListbox(L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
 }
 
 
 void CSnakeGameDlg::OnBnClickedExit()
 {
-	Trace(L"[%d][DLG] Snake Game 종료 시작", __LINE__);
+	TraceListbox(L"[%d][DLG] Snake Game 종료 시작", __LINE__);
 
 	KillTimer(SNAKE_GAME_TIMER);
 	KillTimer(SNAKE_GAME_MAKE_APPLE_TIMER);
-	Trace(L"[%d][DLG] Snake Game 타이머 종료", __LINE__);
+	TraceListbox(L"[%d][DLG] Snake Game 타이머 종료", __LINE__);
 
 	CDialogEx::OnCancel();
 }
@@ -201,10 +201,10 @@ void CSnakeGameDlg::OnBnClickedExit()
 
 void CSnakeGameDlg::OnBnClickedBtnRestart()
 {
-	Trace(L"[%d][DLG] Snake Game 재시작", __LINE__);
+	TraceListbox(L"[%d][DLG] Snake Game 재시작", __LINE__);
 	KillTimer(SNAKE_GAME_TIMER);
 	KillTimer(SNAKE_GAME_MAKE_APPLE_TIMER);
-	Trace(L"[%d][DLG] Snake Game 타이머 종료", __LINE__);
+	TraceListbox(L"[%d][DLG] Snake Game 타이머 종료", __LINE__);
 	if (pSnakeGame)
 		delete pSnakeGame;
 	pSnakeGame = NULL;
@@ -217,7 +217,7 @@ void CSnakeGameDlg::OnBnClickedBtnRestart()
 
 	m_bInit = FALSE;
 	SetTimer(SNAKE_GAME_TIMER, SNAKE_GAME_MOVE_PERIOD, NULL); // timer 
-	Trace(L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
+	TraceListbox(L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
 
 	Invalidate();
 }

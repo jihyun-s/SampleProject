@@ -39,9 +39,6 @@
     <ClInclude Include="Resource.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="utils.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Snake\Apple.h">
       <Filter>헤더 파일\SnakeGame</Filter>
     </ClInclude>
@@ -66,8 +63,8 @@
     <ClInclude Include="Snake\SnakeGameComponent.h">
       <Filter>헤더 파일\SnakeGame</Filter>
     </ClInclude>
-    <ClInclude Include="Snake\SnakeDebuggingModule.h">
-      <Filter>헤더 파일\SnakeGame</Filter>
+    <ClInclude Include="DebuggingModule.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -78,9 +75,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="utils.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Snake\Apple.cpp">
@@ -104,8 +98,8 @@
     <ClCompile Include="Snake\SnakeGameComponent.cpp">
       <Filter>소스 파일\SnakeGame</Filter>
     </ClCompile>
-    <ClCompile Include="Snake\SnakeDebuggingModule.cpp">
-      <Filter>소스 파일\SnakeGame</Filter>
+    <ClCompile Include="DebuggingModule.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,4 @@
-#include "stdafx.h"
-#include "utils.h"
+#include "DebuggingModule.h"
 #include <string>
 #include <Windows.h>
 
@@ -39,7 +38,7 @@ CString GetTimeByFormat(CString strFormat)
 	return str2;
 }
 
-char* UnicodeToUTF8(CString str, BOOL bUTF8)
+char* UnicodeToUTF8(CString str, BOOL bUTF8=true)
 {
 	char* pBuffer = NULL;
 	if (!str.IsEmpty() && str.GetLength() > 0)
@@ -66,9 +65,12 @@ void SaveToLogFile(CString strMsg)
 	}
 }
 
-void _MessageBox(int nMode, void* pCtl, WCHAR* s, ...)
+void CDebuggingModule::TraceListbox(/*int nMode, void* pCtl, */const WCHAR* s, ...) const
 {
 #ifdef _DEBUG
+	int nMode = 2;
+	void* pCtl = m_pDebugConsole;
+
 	WCHAR *str = (WCHAR*)malloc(sizeof(WCHAR) * 1024 * 10);
 	va_list ap;
 
@@ -87,6 +89,7 @@ void _MessageBox(int nMode, void* pCtl, WCHAR* s, ...)
 	aTime = localtime(&nTmpTime);
 
 	WCHAR *str2 = (WCHAR*)malloc(sizeof(WCHAR) * 1024 * 10);
+	
 	if (nMode != 0)
 	{
 		wcsftime(str2, 1024 * 10, L"[%x %X]", aTime);
@@ -111,9 +114,23 @@ void _MessageBox(int nMode, void* pCtl, WCHAR* s, ...)
 
 			lstmsg->SetCurSel(lstmsg->GetCount() - 1);
 		}
-		
+
 	}
 	//SaveToLogFile(str2);
 	free(str2);
 #endif
 }
+
+CDebuggingModule::CDebuggingModule()
+{
+	m_pDebugConsole = nullptr;
+}
+CDebuggingModule::~CDebuggingModule()
+{
+}
+
+void CDebuggingModule::SetDebugConsole(void* a_pDebugConsole)
+{
+	m_pDebugConsole = a_pDebugConsole;
+}
+

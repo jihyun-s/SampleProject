@@ -20,7 +20,7 @@ void Snake::init()
 {
 	vSnake.push_back(make_pair(0, 0));
 	Dir = RIGHT;
-	Trace(L"[%d][Snake] init:x(0),y(0), direction:RIGHT", __LINE__);
+	TraceListbox(L"[%d][Snake] init:x(0),y(0), direction:RIGHT", __LINE__);
 }
 int Snake::GetSize()
 {
@@ -36,7 +36,7 @@ Direction Snake::SetDir(Direction NextDir)
 {
 	Direction cOldDir = Dir;
 	Dir = NextDir;
-	Trace(L"[%d][Snake] SetDirection:%d->%d", __LINE__, cOldDir,Dir);
+	TraceListbox(L"[%d][Snake] SetDirection:%d->%d", __LINE__, cOldDir,Dir);
 	return Dir;
 }
 
@@ -48,13 +48,13 @@ Direction Snake::SetDir(Direction NextDir)
 bool Snake::MoveSnake(int X, int Y, APPLE_CLR c)
 {
 	//vector의 end()가 뱀의 머리임.
-	Trace(L"[%d][Snake] Start Move (%d,%d) color=%d", __LINE__, X, Y, c);
+	TraceListbox(L"[%d][Snake] Start Move (%d,%d) color=%d", __LINE__, X, Y, c);
 
 	int nSize = vSnake.size();
 
 	if (SnakeSelfKill(X, Y))
 	{
-		Trace(L"[%d][Error][Snake] self kill, size=%d", __LINE__, vSnake.size());
+		TraceListbox(L"[%d][Error][Snake] self kill, size=%d", __LINE__, vSnake.size());
 		return false;
 	}
 
@@ -75,11 +75,11 @@ bool Snake::MoveSnake(int X, int Y, APPLE_CLR c)
 
 	if (vSnake.size() == 0)
 	{
-		Trace(L"[%d][Error][Snake] died, size=%d", __LINE__, vSnake.size());
+		TraceListbox(L"[%d][Error][Snake] died, size=%d", __LINE__, vSnake.size());
 		return false;
 	}
 	
-	Trace(L"[%d][Snake] Success Move (%d,%d) color=%d, size=%d", __LINE__, X, Y, c, vSnake.size());
+	TraceListbox(L"[%d][Snake] Success Move (%d,%d) color=%d, size=%d", __LINE__, X, Y, c, vSnake.size());
 	return true;
 }
 
@@ -127,6 +127,6 @@ const Point Snake::GetNextPosition()
 		x = y = -1;
 		break;
 	}
-	Trace(L"[%d][Snake] Get Next(%d,%d)", __LINE__, x, y);
+	TraceListbox(L"[%d][Snake] Get Next(%d,%d)", __LINE__, x, y);
 	return Point(x, y);
 }

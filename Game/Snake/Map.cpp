@@ -24,7 +24,7 @@ void Map::Init(int x, int y)
 		vMap.push_back(element);
 	}
 
-	Trace(L"[%d][Map] init:x(%d),y(%d)", __LINE__, x, y);
+	TraceListbox(L"[%d][Map] init:x(%d),y(%d)", __LINE__, x, y);
 }
 
 Map::~Map()
@@ -53,7 +53,7 @@ void Map::MakeApple()
 	vApple.push_back(cNewApple);
 	vMap[cNewApple.GetAppleX()][cNewApple.GetAppleY()] = 1;
 
-	Trace(L"[%d][Map] MakeApple:x(%d),y(%d), color(%d)", __LINE__, cNewApple.GetAppleX(), cNewApple.GetAppleY(), cNewApple.GetAppleColor());
+	TraceListbox(L"[%d][Map] MakeApple:x(%d),y(%d), color(%d)", __LINE__, cNewApple.GetAppleX(), cNewApple.GetAppleY(), cNewApple.GetAppleColor());
 }
 
 bool Map::ExistApple(const int x, const int y, Apple** sGetApple)
@@ -64,7 +64,7 @@ bool Map::ExistApple(const int x, const int y, Apple** sGetApple)
 		if (it->GetAppleX() == x && it->GetAppleY() == y)
 		{
 			if(sGetApple!=NULL) *sGetApple = &(*it);
-			Trace(L"[%d][Map] ExistApple:x(%d),y(%d)", __LINE__, x, y);
+			TraceListbox(L"[%d][Map] ExistApple:x(%d),y(%d)", __LINE__, x, y);
 			return true;
 		}
 	}
@@ -80,7 +80,7 @@ bool Map::DeleteApple(const int x, const int y)
 		if (it->GetAppleX() == x && it->GetAppleY() == y)
 		{
 			vApple.erase(it); 
-			Trace(L"[%d][Map] DeletetApple:x(%d),y(%d)", __LINE__, x, y);
+			TraceListbox(L"[%d][Map] DeletetApple:x(%d),y(%d)", __LINE__, x, y);
 			return true;
 		}
 	}
@@ -92,7 +92,7 @@ bool Map::DestroyWall(const int x, const int y) const
 {
 	if (x < 0 || x >= sMapSize.x || y < 0 || y >= sMapSize.y) // snake crash from wall
 	{
-		Trace(L"[%d][Error][Map] DestroyWall!!!!!!!!!!!", __LINE__);
+		TraceListbox(L"[%d][Error][Map] DestroyWall!!!!!!!!!!!", __LINE__);
 		return true;
 	}
 	else

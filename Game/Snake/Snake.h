@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
-#include "SnakeDebuggingModule.h"
+#include "../DebuggingModule.h"
 #include "COMMON_TYPES.h" //추후 윗단에서 인클루드 할 경우 제거예정
 using namespace std;
 
-class Snake : public CSnakeDebuggingModule
+class Snake : public CDebuggingModule
 {
 private:
 	vector<pair<int, int>> vSnake;						//뱀 몸 좌표 저장 -> 맵 정보 없이 부딪히는지 확인할수있도록 큐로 안하고 벡터로 함

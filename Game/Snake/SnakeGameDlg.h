@@ -3,11 +3,11 @@
 #include "afxwin.h"
 #include "SnakeGame.h"
 #include "../Observer.h"
-#include "SnakeDebuggingModule.h"
+#include "../DebuggingModule.h"
 
 // CSnakeGameDlg 대화 상자입니다.
 
-class CSnakeGameDlg : public CDialogEx, public CObserver, public CSnakeDebuggingModule
+class CSnakeGameDlg : public CDialogEx, public CObserver, public CDebuggingModule
 {
 	DECLARE_DYNAMIC(CSnakeGameDlg)
 
