@@ -8,6 +8,7 @@ protected:
 	Map *pMap;
 	Snake *pSnake;
 	int nScore;
+	bool bGameOver;
 
 	virtual void SetObserver(CObserver* a_observer);
 	void IncreaseGameScore(APPLE_CLR a_nColor = NONECOLOR);
@@ -26,5 +27,6 @@ public:
 
 	const Map* GetMap() const { return pMap; }
 	const Snake* GetSnake() const { return pSnake; }
+	const bool IsSnakeGameOver() const { return bGameOver; }
 };
 

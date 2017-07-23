@@ -442,7 +442,6 @@ void CSnakeGameDlg::OnPaint()
 			SetWorldTransform(dc, &xOldForm);
 			SetGraphicsMode(dc, GM_COMPATIBLE);
 #else
-
 			Gdiplus::Matrix oldMatrix;
 			graphics->GetTransform(&oldMatrix);
 
@@ -452,6 +451,7 @@ void CSnakeGameDlg::OnPaint()
 
 			Gdiplus::Pen GDIPen_Tongue(Color(255, 128, 128), 2);
 			Gdiplus::Pen GDIPen_EyeBrow(Color(0, 0, 0), 2);
+			Gdiplus::Pen GDIPen_EyeDied(Color(0, 0, 0), 1.5);
 			Gdiplus::SolidBrush GDIBrush_Head(Color(0, 128, 128));
 			Gdiplus::SolidBrush GDIBrush_Eye1(Color(255, 255, 255));
 			Gdiplus::SolidBrush GDIBrush_Eye2(Color(0, 0, 0));
@@ -466,27 +466,51 @@ void CSnakeGameDlg::OnPaint()
 
 			//赣府
 			graphics->FillEllipse(&GDIBrush_Head, nHLeft, nHTop, (nHRight - nHLeft), (nHBottom - nHTop));
+			
+			//内
+			CPoint LeftNosePoint(nCenterX - 2, nCenterY - (nSize / 3));
+			CPoint RightNosePoint(nCenterX + 2, nCenterY - (nSize / 3));
+
+			graphics->FillRectangle(&GDIBrush_Eye2, LeftNosePoint.x - 1, LeftNosePoint.y - 2, 2, 2);
+			graphics->FillRectangle(&GDIBrush_Eye2, RightNosePoint.x - 1, RightNosePoint.y - 2, 2, 2);
 
 			//传s
 			CPoint LeftEyePoint(nCenterX - (nSize / 4), nCenterY - (nSize / 4) + 2);
 			CPoint RightEyePoint(nCenterX + (nSize / 4), nCenterY - (nSize / 4) + 2);
 
-			graphics->DrawLine(&GDIPen_EyeBrow, LeftEyePoint.x - 5, LeftEyePoint.y + 11, LeftEyePoint.x + 5, LeftEyePoint.y + 8);
-			graphics->DrawLine(&GDIPen_EyeBrow, RightEyePoint.x - 5, RightEyePoint.y + 8, RightEyePoint.x + 5, RightEyePoint.y + 11);
-
+			// 传悼磊 闰祸
 			graphics->FillEllipse(&GDIBrush_Eye1, LeftEyePoint.x - 5, LeftEyePoint.y - 5, 10, 10);
 			graphics->FillEllipse(&GDIBrush_Eye1, RightEyePoint.x - 5, RightEyePoint.y - 5, 10, 10);
 
-			graphics->FillEllipse(&GDIBrush_Eye2, LeftEyePoint.x - 4, LeftEyePoint.y - 4, 8, 8);
-			graphics->FillEllipse(&GDIBrush_Eye2, RightEyePoint.x - 4, RightEyePoint.y - 4, 8, 8);
+			if (pSnakeGame->IsSnakeGameOver()) // died : @_@
+			{
+				// 传界
+				graphics->DrawLine(&GDIPen_EyeBrow, LeftEyePoint.x - 5, LeftEyePoint.y + 8, LeftEyePoint.x + 5, LeftEyePoint.y + 11);
+				graphics->DrawLine(&GDIPen_EyeBrow, RightEyePoint.x - 5, RightEyePoint.y + 11, RightEyePoint.x + 5, RightEyePoint.y + 8);
 
-			//内
-			CPoint LeftNosePoint(nCenterX - 2, nCenterY - (nSize / 3));
-			CPoint RightNosePoint(nCenterX + 2, nCenterY - (nSize / 3));
+				// 传悼磊
+				Gdiplus::GraphicsPath eyePath;
+				
+				eyePath.AddEllipse(LeftEyePoint.x - 1, LeftEyePoint.y - 1, 2, 2);
+				eyePath.AddEllipse(LeftEyePoint.x - 3, LeftEyePoint.y - 3, 6, 6);
+				eyePath.AddEllipse(LeftEyePoint.x-5, LeftEyePoint.y-5, 10, 10);
 
-			graphics->FillRectangle(&GDIBrush_Eye2, LeftNosePoint.x - 1, LeftNosePoint.y - 1, 2, 2);
-			graphics->FillRectangle(&GDIBrush_Eye2, RightNosePoint.x - 1, RightNosePoint.y - 1, 2, 2);
+				eyePath.AddEllipse(RightEyePoint.x - 1, RightEyePoint.y - 1, 2, 2);
+				eyePath.AddEllipse(RightEyePoint.x - 3, RightEyePoint.y - 3, 6, 6);
+				eyePath.AddEllipse(RightEyePoint.x - 5, RightEyePoint.y - 5, 10, 10);
 
+				graphics->DrawPath(&GDIPen_EyeDied, &eyePath);
+			}
+			else // alive
+			{
+				// 传界
+				graphics->DrawLine(&GDIPen_EyeBrow, LeftEyePoint.x - 5, LeftEyePoint.y + 11, LeftEyePoint.x + 5, LeftEyePoint.y + 8);
+				graphics->DrawLine(&GDIPen_EyeBrow, RightEyePoint.x - 5, RightEyePoint.y + 8, RightEyePoint.x + 5, RightEyePoint.y + 11);
+
+				// 传悼磊 八沥祸
+				graphics->FillEllipse(&GDIBrush_Eye2, LeftEyePoint.x - 4, LeftEyePoint.y - 4, 8, 8);
+				graphics->FillEllipse(&GDIBrush_Eye2, RightEyePoint.x - 4, RightEyePoint.y - 4, 8, 8);
+			}
 			graphics->SetTransform(&oldMatrix);
 #endif//NOT_USE_GDIPLUS
 		}

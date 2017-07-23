@@ -6,7 +6,7 @@ SnakeGame::SnakeGame()
 	pMap = new Map();
 	pSnake = new Snake();
 	nScore = 0;
-
+	bGameOver = false;
 	pMap->MakeApple();
 }
 
@@ -15,7 +15,7 @@ SnakeGame::SnakeGame(CObserver* pObserver)
 	pMap = new Map();
 	pSnake = new Snake();
 	nScore = 0;
-
+	bGameOver = false;
 	this->SetObserver(pObserver);
 	pMap->MakeApple();
 	NotifyObserver(false, nScore);
@@ -33,7 +33,7 @@ SnakeGame::SnakeGame(CObserver* pObserver, void* pDebugConsole)
 	pMap = new Map(pDebugConsole);
 	pSnake = new Snake(pDebugConsole);
 	nScore = 0;
-
+	bGameOver = false;
 	this->SetObserver(pObserver);
 	pMap->MakeApple();
 	NotifyObserver(false, nScore);
@@ -41,7 +41,7 @@ SnakeGame::SnakeGame(CObserver* pObserver, void* pDebugConsole)
 bool SnakeGame::MoveStraight()
 {
 	// 한 칸씩 이동
-	bool ret1, ret2, finalResult; 
+	bool ret1, ret2; 
 	APPLE_CLR appleColor = NONECOLOR;
 	Point nextPos = pSnake->GetNextPosition();
 
@@ -62,16 +62,16 @@ bool SnakeGame::MoveStraight()
 	// ret1의 결과값인 벽에 충돌하지 않은 경우에만 뱀을 진행시킨다. 
 	// ret2 : 몸길이0 or self kill
 	if (ret1 || !(ret2 = pSnake->MoveSnake(nextPos.x, nextPos.y, appleColor)))	// fail
-		finalResult = false;
+		bGameOver = true;
 	else
 	{
-		finalResult = true;
+		bGameOver = false;
 		IncreaseGameScore();
 	}
 
 	NotifyObserver(true, nScore);
 
-	return finalResult;
+	return !bGameOver;
 }
 
 void SnakeGame::ChangDirection(Direction a_dir)
