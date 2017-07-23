@@ -35,4 +35,5 @@ public:
 	afx_msg void OnBnClickedExit();
 	CStatic m_Map;
 	afx_msg void OnPaint();
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };

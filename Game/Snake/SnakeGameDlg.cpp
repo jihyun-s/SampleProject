@@ -86,6 +86,7 @@ BEGIN_MESSAGE_MAP(CSnakeGameDlg, CDialogEx)
 	ON_BN_CLICKED(IDEXIT, &CSnakeGameDlg::OnBnClickedExit)
 	ON_WM_PAINT()
 //	ON_WM_ERASEBKGND()
+ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 
@@ -224,19 +225,27 @@ void CSnakeGameDlg::OnPaint()
 	m_Map.GetWindowRect(r);
 	ScreenToClient(r);
 
+#ifndef NOT_USE_GDIPLUS
+	Gdiplus::Graphics *graphics = new Gdiplus::Graphics(dc); // dc.GetSafeHdc());
+	
+	// 한번에 그리기 위한 buffer역할을 하는 bitmap을 생성한다.(깜빡임은 한번에 그리지 않고 여러번 그리기 때문에 발생함)
+	Gdiplus::Bitmap bitmap(r.Width(), r.Height());
+	Gdiplus::Graphics memDC(&bitmap);
+
+	// 그리기 전 bitmap 바탕을 그려준다. (이 부분이 없으면 잔상이 남게 된다)
+	Gdiplus::SolidBrush bgBrush(Color(185, 122, 87));
+	memDC.FillRectangle(&bgBrush, 0, 0, r.Width(), r.Height());
+
+	memDC.SetSmoothingMode(SmoothingModeAntiAlias);
+#else
 	CPen BGPen(PS_NULL, 1, RGB(255, 0, 0));
 	CBrush BGBrush(RGB(185, 122, 87));
 
 	dc.SelectObject(&BGPen);
 	dc.SelectObject(&BGBrush);
 	dc.Rectangle(r);
-
-	int nSize = (r.right - r.left) / 10;
-
-#ifndef NOT_USE_GDIPLUS
-	Gdiplus::Graphics *graphics = new Graphics(dc); // dc.GetSafeHdc());
-	graphics->SetSmoothingMode(SmoothingModeAntiAlias);
 #endif //NOT_USE_GDIPLUS
+	int nSize = (r.right - r.left) / 10.0;
 
 	if (pSnakeGame)
 	{
@@ -249,10 +258,10 @@ void CSnakeGameDlg::OnPaint()
 			const int nY = (*itr_apple).GetAppleY();
 			const APPLE_CLR nColor = (*itr_apple).GetAppleColor();
 
-			int nLeft = r.left + nX*nSize;
-			int nTop = r.top + nY*nSize;
-			int nRight = r.left + nX*nSize + nSize;
-			int nBottom = r.top + nY*nSize + nSize;
+			int nLeft = nX*nSize;
+			int nTop = nY*nSize;
+			int nRight = nX*nSize + nSize;
+			int nBottom = nY*nSize + nSize;
 
 			int nCenterX = nLeft + (nSize / 2);
 			int nCenterY = nTop + (nSize / 2);
@@ -287,9 +296,7 @@ void CSnakeGameDlg::OnPaint()
 			CBrush TempBrush(RGB(255, 255, 255));
 			dc.SelectObject(&TempBrush);
 			dc.Ellipse(nLeft + 2, nCenterY - 4, nLeft + 8, nCenterY + 4);
-
 #else
-
 			Gdiplus::SolidBrush GDIBrush_REDAPPLE(Color(255, 0, 0));
 			Gdiplus::SolidBrush GDIBrush_GREENAPPLE(Color(34, 177, 76));
 			GraphicsPath* myGraphicsPath = new GraphicsPath();
@@ -301,9 +308,9 @@ void CSnakeGameDlg::OnPaint()
 				myGraphicsPath->AddArc(nCenterX, nSmallTop, (nRight - nCenterX), (nSmallBottom - nSmallTop), 180, 180); //sweepangle
 
 				if (nColor == RED)
-					graphics->FillPath(&GDIBrush_REDAPPLE, myGraphicsPath);
+					memDC.FillPath(&GDIBrush_REDAPPLE, myGraphicsPath);
 				else if (nColor == GREEN)
-					graphics->FillPath(&GDIBrush_GREENAPPLE, myGraphicsPath);
+					memDC.FillPath(&GDIBrush_GREENAPPLE, myGraphicsPath);
 
 				delete myGraphicsPath;
 				myGraphicsPath = NULL;
@@ -311,10 +318,10 @@ void CSnakeGameDlg::OnPaint()
 
 			Gdiplus::Pen GDIPen_AppleBranch(Color(128, 64, 0), 4);
 			GDIPen_AppleBranch.SetLineCap(Gdiplus::LineCapRound, Gdiplus::LineCapRound, Gdiplus::DashCapRound);
-			graphics->DrawLine(&GDIPen_AppleBranch, Gdiplus::Point(nCenterX, nCenterY), Gdiplus::Point(nCenterX + 5, nTop + 5));
+			memDC.DrawLine(&GDIPen_AppleBranch, Gdiplus::Point(nCenterX, nCenterY), Gdiplus::Point(nCenterX + 5, nTop + 5));
 
 			Gdiplus::SolidBrush GDIBrush_APPLESHINE(Color(255, 255, 255));
-			graphics->FillEllipse(&GDIBrush_APPLESHINE, nLeft + 2, nCenterY - 4, 6, 8);
+			memDC.FillEllipse(&GDIBrush_APPLESHINE, nLeft + 2, nCenterY - 4, 6, 8);
 
 #endif //NOT_USE_GDIPLUS
 		}
@@ -342,10 +349,10 @@ void CSnakeGameDlg::OnPaint()
 				const int nX = (*itr_snake).first;
 				const int nY = (*itr_snake).second;
 
-				int nLeft = r.left + nX*nSize;// -4;
-				int nTop = r.top + nY*nSize;// -4;
-				int nRight = r.left + nX*nSize + nSize;// +4;
-				int nBottom = r.top + nY*nSize + nSize;// +4;
+				int nLeft = nX*nSize;
+				int nTop = nY*nSize;
+				int nRight = nX*nSize + nSize;
+				int nBottom = nY*nSize + nSize;
 				int nBODYSIZE_X = nRight - nLeft;
 				int nBODYSIZE_Y = nBottom - nTop;
 
@@ -362,12 +369,14 @@ void CSnakeGameDlg::OnPaint()
 				dc.SelectObject(&BGBrush);
 #else
 				Gdiplus::SolidBrush GDIBrush_SnakeBody1(Color(0, 128, 128));
-				Gdiplus::SolidBrush GDIBrush_SnakeBody2(Color(170, 197, 165));
+				//Gdiplus::SolidBrush GDIBrush_SnakeBody2(Color(170, 197, 165));
+				Gdiplus::Pen GDIPen_SnakeBody2(Color(170, 197, 165), 3);
 
-				dc.Ellipse(nLeft, nTop, nRight, nBottom);
-				graphics->FillEllipse(&GDIBrush_SnakeBody1, nLeft, nTop, nBODYSIZE_X, nBODYSIZE_Y);
-				graphics->FillEllipse(&GDIBrush_SnakeBody2, nLeft + 4, nTop + 4, nBODYSIZE_X - 8, nBODYSIZE_Y - 8);
-				graphics->FillEllipse(&GDIBrush_SnakeBody1, nLeft + 7, nTop + 7, nBODYSIZE_X - 14, nBODYSIZE_Y - 14);
+				//dc.Ellipse(nLeft, nTop, nRight, nBottom);
+				memDC.FillEllipse(&GDIBrush_SnakeBody1, nLeft, nTop, nBODYSIZE_X, nBODYSIZE_Y);
+				memDC.DrawEllipse(&GDIPen_SnakeBody2, nLeft + 4, nTop + 4, nBODYSIZE_X - 8, nBODYSIZE_Y - 8);
+				//memDC.FillEllipse(&GDIBrush_SnakeBody2, nLeft + 4, nTop + 4, nBODYSIZE_X - 8, nBODYSIZE_Y - 8);
+				//memDC.FillEllipse(&GDIBrush_SnakeBody1, nLeft + 7, nTop + 7, nBODYSIZE_X - 14, nBODYSIZE_Y - 14);
 
 #endif//NOT_USE_GDIPLUS
 
@@ -375,10 +384,10 @@ void CSnakeGameDlg::OnPaint()
 
 			// draw snake head
 
-			int nHLeft = r.left + (pSnakeHead).first*nSize;
-			int nHTop = r.top + (pSnakeHead).second*nSize;
-			int nHRight = r.left + (pSnakeHead).first*nSize + nSize;
-			int nHBottom = r.top + (pSnakeHead).second*nSize + nSize;
+			int nHLeft = (pSnakeHead).first*nSize;
+			int nHTop = (pSnakeHead).second*nSize;
+			int nHRight = (pSnakeHead).first*nSize + nSize;
+			int nHBottom = (pSnakeHead).second*nSize + nSize;
 			int nCenterX = nHLeft + (nSize / 2);
 			int nCenterY = nHTop + (nSize / 2);
 
@@ -443,11 +452,11 @@ void CSnakeGameDlg::OnPaint()
 			SetGraphicsMode(dc, GM_COMPATIBLE);
 #else
 			Gdiplus::Matrix oldMatrix;
-			graphics->GetTransform(&oldMatrix);
+			memDC.GetTransform(&oldMatrix);
 
 			Matrix NewMatrix;
 			NewMatrix.RotateAt(degrees, Gdiplus::PointF(nCenterX, nCenterY));
-			graphics->SetTransform(&NewMatrix);
+			memDC.SetTransform(&NewMatrix);
 
 			Gdiplus::Pen GDIPen_Tongue(Color(255, 128, 128), 2);
 			Gdiplus::Pen GDIPen_EyeBrow(Color(0, 0, 0), 2);
@@ -462,31 +471,31 @@ void CSnakeGameDlg::OnPaint()
 			Lines[1].X = nCenterX - 3;	Lines[1].Y = nHTop - 3;
 			Lines[2].X = nCenterX + 3;	Lines[2].Y = nHTop - 5;
 			Lines[3].X = nCenterX - 3;	Lines[3].Y = nHTop - 7;
-			graphics->DrawLines(&GDIPen_Tongue, Lines, 4);
+			memDC.DrawLines(&GDIPen_Tongue, Lines, 4);
 
 			//머리
-			graphics->FillEllipse(&GDIBrush_Head, nHLeft, nHTop, (nHRight - nHLeft), (nHBottom - nHTop));
+			memDC.FillEllipse(&GDIBrush_Head, nHLeft, nHTop, (nHRight - nHLeft), (nHBottom - nHTop));
 			
 			//코
 			CPoint LeftNosePoint(nCenterX - 2, nCenterY - (nSize / 3));
 			CPoint RightNosePoint(nCenterX + 2, nCenterY - (nSize / 3));
 
-			graphics->FillRectangle(&GDIBrush_Eye2, LeftNosePoint.x - 1, LeftNosePoint.y - 2, 2, 2);
-			graphics->FillRectangle(&GDIBrush_Eye2, RightNosePoint.x - 1, RightNosePoint.y - 2, 2, 2);
+			memDC.FillRectangle(&GDIBrush_Eye2, LeftNosePoint.x - 1, LeftNosePoint.y - 2, 2, 2);
+			memDC.FillRectangle(&GDIBrush_Eye2, RightNosePoint.x - 1, RightNosePoint.y - 2, 2, 2);
 
 			//눈s
 			CPoint LeftEyePoint(nCenterX - (nSize / 4), nCenterY - (nSize / 4) + 2);
 			CPoint RightEyePoint(nCenterX + (nSize / 4), nCenterY - (nSize / 4) + 2);
 
 			// 눈동자 흰색
-			graphics->FillEllipse(&GDIBrush_Eye1, LeftEyePoint.x - 5, LeftEyePoint.y - 5, 10, 10);
-			graphics->FillEllipse(&GDIBrush_Eye1, RightEyePoint.x - 5, RightEyePoint.y - 5, 10, 10);
+			memDC.FillEllipse(&GDIBrush_Eye1, LeftEyePoint.x - 5, LeftEyePoint.y - 5, 10, 10);
+			memDC.FillEllipse(&GDIBrush_Eye1, RightEyePoint.x - 5, RightEyePoint.y - 5, 10, 10);
 
 			if (pSnakeGame->IsSnakeGameOver()) // died : @_@
 			{
 				// 눈썹
-				graphics->DrawLine(&GDIPen_EyeBrow, LeftEyePoint.x - 5, LeftEyePoint.y + 8, LeftEyePoint.x + 5, LeftEyePoint.y + 11);
-				graphics->DrawLine(&GDIPen_EyeBrow, RightEyePoint.x - 5, RightEyePoint.y + 11, RightEyePoint.x + 5, RightEyePoint.y + 8);
+				memDC.DrawLine(&GDIPen_EyeBrow, LeftEyePoint.x - 5, LeftEyePoint.y + 8, LeftEyePoint.x + 5, LeftEyePoint.y + 11);
+				memDC.DrawLine(&GDIPen_EyeBrow, RightEyePoint.x - 5, RightEyePoint.y + 11, RightEyePoint.x + 5, RightEyePoint.y + 8);
 
 				// 눈동자
 				Gdiplus::GraphicsPath eyePath;
@@ -499,22 +508,25 @@ void CSnakeGameDlg::OnPaint()
 				eyePath.AddEllipse(RightEyePoint.x - 3, RightEyePoint.y - 3, 6, 6);
 				eyePath.AddEllipse(RightEyePoint.x - 5, RightEyePoint.y - 5, 10, 10);
 
-				graphics->DrawPath(&GDIPen_EyeDied, &eyePath);
+				memDC.DrawPath(&GDIPen_EyeDied, &eyePath);
 			}
 			else // alive
 			{
 				// 눈썹
-				graphics->DrawLine(&GDIPen_EyeBrow, LeftEyePoint.x - 5, LeftEyePoint.y + 11, LeftEyePoint.x + 5, LeftEyePoint.y + 8);
-				graphics->DrawLine(&GDIPen_EyeBrow, RightEyePoint.x - 5, RightEyePoint.y + 8, RightEyePoint.x + 5, RightEyePoint.y + 11);
+				memDC.DrawLine(&GDIPen_EyeBrow, LeftEyePoint.x - 5, LeftEyePoint.y + 11, LeftEyePoint.x + 5, LeftEyePoint.y + 8);
+				memDC.DrawLine(&GDIPen_EyeBrow, RightEyePoint.x - 5, RightEyePoint.y + 8, RightEyePoint.x + 5, RightEyePoint.y + 11);
 
 				// 눈동자 검정색
-				graphics->FillEllipse(&GDIBrush_Eye2, LeftEyePoint.x - 4, LeftEyePoint.y - 4, 8, 8);
-				graphics->FillEllipse(&GDIBrush_Eye2, RightEyePoint.x - 4, RightEyePoint.y - 4, 8, 8);
+				memDC.FillEllipse(&GDIBrush_Eye2, LeftEyePoint.x - 4, LeftEyePoint.y - 4, 8, 8);
+				memDC.FillEllipse(&GDIBrush_Eye2, RightEyePoint.x - 4, RightEyePoint.y - 4, 8, 8);
 			}
-			graphics->SetTransform(&oldMatrix);
+			memDC.SetTransform(&oldMatrix);
 #endif//NOT_USE_GDIPLUS
 		}
 	}
+
+	// 완성된 bitmap은 한번에 화면에 그린다.
+	graphics->DrawImage(&bitmap, r.left, r.top);
 }
 
 void CSnakeGameDlg::UpdateUI()
@@ -528,4 +540,13 @@ void CSnakeGameDlg::UpdateUI()
 void CSnakeGameDlg::UpdateScore(int a_nScore)
 {
 	SetDlgItemInt(IDC_EDIT1, a_nScore);
+}
+
+BOOL CSnakeGameDlg::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	if (m_bInit)	// 최초 한 번만 배경 그리기
+		return FALSE;
+
+	return __super::OnEraseBkgnd(pDC);
 }
