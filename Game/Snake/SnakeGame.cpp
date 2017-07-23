@@ -47,7 +47,6 @@ bool SnakeGame::MoveStraight()
 
 	bool bApple = false;
 	// ret1 : 벽에 충돌
-	// 벽에 충돌이어도 일단 이동시킴
 	if (!(ret1=pMap->DestroyWall(nextPos.x, nextPos.y)))
 	{
 		Apple* tmp = NULL;
@@ -60,10 +59,9 @@ bool SnakeGame::MoveStraight()
 		}
 	}
 
+	// ret1의 결과값인 벽에 충돌하지 않은 경우에만 뱀을 진행시킨다. 
 	// ret2 : 몸길이0 or self kill
-	ret2 = pSnake->MoveSnake(nextPos.x, nextPos.y, appleColor);
-
-	if (ret1 || !ret2)	// fail
+	if (ret1 || !(ret2 = pSnake->MoveSnake(nextPos.x, nextPos.y, appleColor)))	// fail
 		finalResult = false;
 	else
 	{
