@@ -322,6 +322,7 @@ void CSnakeGameDlg::OnPaint()
 		// draw snake
 		const vector<pair<int, int>>* pSnake = pSnakeGame->GetSnake()->GetSnakePosition();
 		vector<pair<int, int>>::const_reverse_iterator itr_snake = pSnake->rbegin();
+		const pair<int, int> pSnakeHead = *itr_snake;
 
 		const Direction CurrentDir = pSnakeGame->GetSnake()->GetDir();
 		double degrees = 0;
@@ -332,14 +333,51 @@ void CSnakeGameDlg::OnPaint()
 		if (CurrentDir == LEFT)
 			degrees = 270;
 
-		// draw snake head
 		if (itr_snake != pSnake->rend())
 		{
+			// draw snake body 
+			for (++itr_snake; itr_snake != pSnake->rend(); ++itr_snake)
+			{
+				const int nX = (*itr_snake).first;
+				const int nY = (*itr_snake).second;
 
-			int nHLeft = r.left + (*itr_snake).first*nSize;
-			int nHTop = r.top + (*itr_snake).second*nSize;
-			int nHRight = r.left + (*itr_snake).first*nSize + nSize;
-			int nHBottom = r.top + (*itr_snake).second*nSize + nSize;
+				int nLeft = r.left + nX*nSize;// -4;
+				int nTop = r.top + nY*nSize;// -4;
+				int nRight = r.left + nX*nSize + nSize;// +4;
+				int nBottom = r.top + nY*nSize + nSize;// +4;
+				int nBODYSIZE_X = nRight - nLeft;
+				int nBODYSIZE_Y = nBottom - nTop;
+
+#ifdef NOT_USE_GDIPLUS
+				CBrush SnakeBrush(RGB(0, 128, 128));
+				CBrush SnakeBrush2(RGB(170, 197, 165));
+
+				dc.SelectObject(&SnakeBrush);
+				dc.Ellipse(nLeft, nTop, nRight, nBottom);
+				dc.SelectObject(&SnakeBrush2);
+				dc.Ellipse(nLeft + 4, nTop + 4, nRight - 4, nBottom - 4);
+				dc.SelectObject(&SnakeBrush);
+				dc.Ellipse(nLeft + 7, nTop + 7, nRight - 7, nBottom - 7);
+				dc.SelectObject(&BGBrush);
+#else
+				Gdiplus::SolidBrush GDIBrush_SnakeBody1(Color(0, 128, 128));
+				Gdiplus::SolidBrush GDIBrush_SnakeBody2(Color(170, 197, 165));
+
+				dc.Ellipse(nLeft, nTop, nRight, nBottom);
+				graphics->FillEllipse(&GDIBrush_SnakeBody1, nLeft, nTop, nBODYSIZE_X, nBODYSIZE_Y);
+				graphics->FillEllipse(&GDIBrush_SnakeBody2, nLeft + 4, nTop + 4, nBODYSIZE_X - 8, nBODYSIZE_Y - 8);
+				graphics->FillEllipse(&GDIBrush_SnakeBody1, nLeft + 7, nTop + 7, nBODYSIZE_X - 14, nBODYSIZE_Y - 14);
+
+#endif//NOT_USE_GDIPLUS
+
+			}
+
+			// draw snake head
+
+			int nHLeft = r.left + (pSnakeHead).first*nSize;
+			int nHTop = r.top + (pSnakeHead).second*nSize;
+			int nHRight = r.left + (pSnakeHead).first*nSize + nSize;
+			int nHBottom = r.top + (pSnakeHead).second*nSize + nSize;
 			int nCenterX = nHLeft + (nSize / 2);
 			int nCenterY = nHTop + (nSize / 2);
 
@@ -450,44 +488,6 @@ void CSnakeGameDlg::OnPaint()
 
 			graphics->SetTransform(&oldMatrix);
 #endif//NOT_USE_GDIPLUS
-
-
-			// draw snake body 
-			for (++itr_snake; itr_snake != pSnake->rend(); ++itr_snake)
-			{
-				const int nX = (*itr_snake).first;
-				const int nY = (*itr_snake).second;
-
-				int nLeft = r.left + nX*nSize;// -4;
-				int nTop = r.top + nY*nSize;// -4;
-				int nRight = r.left + nX*nSize + nSize;// +4;
-				int nBottom = r.top + nY*nSize + nSize;// +4;
-				int nBODYSIZE_X = nRight - nLeft;
-				int nBODYSIZE_Y = nBottom - nTop;
-
-#ifdef NOT_USE_GDIPLUS
-				CBrush SnakeBrush(RGB(0, 128, 128));
-				CBrush SnakeBrush2(RGB(170, 197, 165));
-
-				dc.SelectObject(&SnakeBrush);
-				dc.Ellipse(nLeft, nTop, nRight, nBottom);
-				dc.SelectObject(&SnakeBrush2);
-				dc.Ellipse(nLeft + 4, nTop + 4, nRight - 4, nBottom - 4);
-				dc.SelectObject(&SnakeBrush);
-				dc.Ellipse(nLeft + 7, nTop + 7, nRight - 7, nBottom - 7);
-				dc.SelectObject(&BGBrush);
-#else
-				Gdiplus::SolidBrush GDIBrush_SnakeBody1(Color(0, 128, 128));
-				Gdiplus::SolidBrush GDIBrush_SnakeBody2(Color(170, 197, 165));
-
-				dc.Ellipse(nLeft, nTop, nRight, nBottom);
-				graphics->FillEllipse(&GDIBrush_SnakeBody1, nLeft, nTop, nBODYSIZE_X, nBODYSIZE_Y);
-				graphics->FillEllipse(&GDIBrush_SnakeBody2, nLeft + 4, nTop + 4, nBODYSIZE_X - 8, nBODYSIZE_Y - 8);
-				graphics->FillEllipse(&GDIBrush_SnakeBody1, nLeft + 7, nTop + 7, nBODYSIZE_X - 14, nBODYSIZE_Y - 14);
-
-#endif//NOT_USE_GDIPLUS
-
-			}
 		}
 	}
 }
