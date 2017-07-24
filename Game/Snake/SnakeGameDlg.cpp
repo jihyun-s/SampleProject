@@ -7,8 +7,6 @@
 #include <gdiplus.h>
 using namespace Gdiplus;
 
-//#define NOT_USE_GDIPLUS
-
 // CSnakeGameDlg 대화 상자입니다.
 #define SNAKE_GAME_TIMER 9999
 #define SNAKE_GAME_MAKE_APPLE_TIMER 9998
