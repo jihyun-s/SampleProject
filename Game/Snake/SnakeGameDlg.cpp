@@ -228,12 +228,43 @@ void CSnakeGameDlg::OnPaint()
 	// 한번에 그리기 위한 buffer역할을 하는 bitmap을 생성한다.(깜빡임은 한번에 그리지 않고 여러번 그리기 때문에 발생함)
 	Gdiplus::Bitmap bitmap(r.Width(), r.Height());
 	Gdiplus::Graphics memDC(&bitmap);
+	memDC.SetSmoothingMode(SmoothingModeAntiAlias);
 
 	// 그리기 전 bitmap 바탕을 그려준다. (이 부분이 없으면 잔상이 남게 된다)
-	Gdiplus::SolidBrush bgBrush(Color(185, 122, 87));
-	memDC.FillRectangle(&bgBrush, 0, 0, r.Width(), r.Height());
+	Gdiplus::SolidBrush GDIBrush_BG(Color(185, 122, 87));
+	memDC.FillRectangle(&GDIBrush_BG, 0, 0, r.Width(), r.Height());
 
-	memDC.SetSmoothingMode(SmoothingModeAntiAlias);
+
+	//잔디
+	Gdiplus::SolidBrush GDIBrush_Grass(Color(0, 128, 0));
+	Gdiplus::Point pGrass[7];
+	pGrass[0] = Gdiplus::Point(0, 12);
+	pGrass[1] = Gdiplus::Point(5, 0);
+	pGrass[2] = Gdiplus::Point(10, 6);
+	pGrass[3] = Gdiplus::Point(15, 0);
+	pGrass[4] = Gdiplus::Point(20, 6);
+	pGrass[5] = Gdiplus::Point(25, 0);
+	pGrass[6] = Gdiplus::Point(30, 12);
+
+	int nGrassPos = r.Width() / 5;
+	Gdiplus::Point pGrassPos[7];
+	pGrassPos[0] = Gdiplus::Point(nGrassPos, nGrassPos);
+	pGrassPos[1] = Gdiplus::Point(nGrassPos * 4, nGrassPos);
+	pGrassPos[2] = Gdiplus::Point(nGrassPos, nGrassPos * 4);
+	pGrassPos[3] = Gdiplus::Point(nGrassPos * 3, nGrassPos * 4);
+	pGrassPos[4] = Gdiplus::Point(nGrassPos * 4, nGrassPos * 2);
+	pGrassPos[5] = Gdiplus::Point(nGrassPos, nGrassPos * 3);
+	pGrassPos[6] = Gdiplus::Point(nGrassPos * 3, nGrassPos * 2);
+
+	for (int i = 0; i < 7; i++)
+	{
+		Gdiplus::Point pNewGrass[7];
+		for (int j = 0; j < 7; j++)
+			pNewGrass[j] = pGrass[j] + pGrassPos[i];
+		memDC.FillPolygon(&GDIBrush_Grass, pNewGrass, 7);
+	}
+		
+	
 
 	int nSize = (r.right - r.left) / 10;
 
