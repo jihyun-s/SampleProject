@@ -225,7 +225,6 @@ void CSnakeGameDlg::OnPaint()
 	m_Map.GetWindowRect(r);
 	ScreenToClient(r);
 
-#ifndef NOT_USE_GDIPLUS
 	Gdiplus::Graphics *graphics = new Gdiplus::Graphics(dc); // dc.GetSafeHdc());
 	
 	// 한번에 그리기 위한 buffer역할을 하는 bitmap을 생성한다.(깜빡임은 한번에 그리지 않고 여러번 그리기 때문에 발생함)
@@ -237,14 +236,7 @@ void CSnakeGameDlg::OnPaint()
 	memDC.FillRectangle(&bgBrush, 0, 0, r.Width(), r.Height());
 
 	memDC.SetSmoothingMode(SmoothingModeAntiAlias);
-#else
-	CPen BGPen(PS_NULL, 1, RGB(255, 0, 0));
-	CBrush BGBrush(RGB(185, 122, 87));
 
-	dc.SelectObject(&BGPen);
-	dc.SelectObject(&BGBrush);
-	dc.Rectangle(r);
-#endif //NOT_USE_GDIPLUS
 	int nSize = (r.right - r.left) / 10;
 
 	if (pSnakeGame)
@@ -269,34 +261,6 @@ void CSnakeGameDlg::OnPaint()
 			int nSmallTop = nTop + (nSize / 4);
 			int nSmallBottom = nBottom - (nSize / 4);
 
-#ifdef NOT_USE_GDIPLUS
-
-			CBrush RedAppleBrush(RGB(255, 0, 0));
-			CBrush GreenAppleBrush(RGB(34, 177, 76));
-			CPen AppleBranch(PS_SOLID, 4, RGB(128, 64, 0));
-
-			if (nColor == RED)
-				dc.SelectObject(&RedAppleBrush);
-			else if (nColor == GREEN)
-				dc.SelectObject(&GreenAppleBrush);
-
-			dc.BeginPath();
-			dc.MoveTo(nLeft, nCenterY);
-			dc.ArcTo(nLeft, nTop, nRight, nBottom, nLeft, nCenterY, nRight, nCenterY); //countclockwise
-			dc.ArcTo(nCenterX, nSmallTop, nRight, nSmallBottom, nRight, nCenterY, nCenterX, nCenterY); //countclockwise
-			dc.ArcTo(nLeft, nSmallTop, nCenterX, nSmallBottom, nCenterX, nCenterY, nLeft, nCenterY); //countclockwise
-			dc.EndPath();
-			dc.FillPath();
-
-			dc.SelectObject(&AppleBranch);
-			dc.MoveTo(nCenterX, nCenterY);
-			dc.LineTo(nCenterX + 5, nTop + 5);
-			dc.SelectObject(&BGPen);
-
-			CBrush TempBrush(RGB(255, 255, 255));
-			dc.SelectObject(&TempBrush);
-			dc.Ellipse(nLeft + 2, nCenterY - 4, nLeft + 8, nCenterY + 4);
-#else
 			Gdiplus::SolidBrush GDIBrush_REDAPPLE(Color(255, 0, 0));
 			Gdiplus::SolidBrush GDIBrush_GREENAPPLE(Color(34, 177, 76));
 			GraphicsPath* myGraphicsPath = new GraphicsPath();
@@ -323,7 +287,6 @@ void CSnakeGameDlg::OnPaint()
 			Gdiplus::SolidBrush GDIBrush_APPLESHINE(Color(255, 255, 255));
 			memDC.FillEllipse(&GDIBrush_APPLESHINE, nLeft + 2, nCenterY - 4, 6, 8);
 
-#endif //NOT_USE_GDIPLUS
 		}
 
 		// draw snake
@@ -356,18 +319,6 @@ void CSnakeGameDlg::OnPaint()
 				int nBODYSIZE_X = nRight - nLeft;
 				int nBODYSIZE_Y = nBottom - nTop;
 
-#ifdef NOT_USE_GDIPLUS
-				CBrush SnakeBrush(RGB(0, 128, 128));
-				CBrush SnakeBrush2(RGB(170, 197, 165));
-
-				dc.SelectObject(&SnakeBrush);
-				dc.Ellipse(nLeft, nTop, nRight, nBottom);
-				dc.SelectObject(&SnakeBrush2);
-				dc.Ellipse(nLeft + 4, nTop + 4, nRight - 4, nBottom - 4);
-				dc.SelectObject(&SnakeBrush);
-				dc.Ellipse(nLeft + 7, nTop + 7, nRight - 7, nBottom - 7);
-				dc.SelectObject(&BGBrush);
-#else
 				Gdiplus::SolidBrush GDIBrush_SnakeBody1(Color(0, 128, 128));
 				Gdiplus::SolidBrush GDIBrush_SnakeBody2(Color(170, 197, 165));
 
@@ -376,7 +327,6 @@ void CSnakeGameDlg::OnPaint()
 				memDC.FillEllipse(&GDIBrush_SnakeBody2, nLeft + 4, nTop + 4, nBODYSIZE_X - 8, nBODYSIZE_Y - 8);
 				memDC.FillEllipse(&GDIBrush_SnakeBody1, nLeft + 7, nTop + 7, nBODYSIZE_X - 14, nBODYSIZE_Y - 14);
 
-#endif//NOT_USE_GDIPLUS
 
 			}
 
@@ -389,66 +339,6 @@ void CSnakeGameDlg::OnPaint()
 			int nCenterX = nHLeft + (nSize / 2);
 			int nCenterY = nHTop + (nSize / 2);
 
-#ifdef NOT_USE_GDIPLUS
-			XFORM xOldForm, xNewForm;
-			dc.GetWorldTransform(&xOldForm);
-			SetGraphicsMode(dc, GM_ADVANCED);
-			double radian = (double)degrees / 180. * 3.1415926;
-			xNewForm.eM11 = (float)cos(radian);
-			xNewForm.eM12 = (float)sin(radian);
-			xNewForm.eM21 = (float)-sin(radian);
-			xNewForm.eM22 = (float)cos(radian);
-			xNewForm.eDx = (float)(nCenterX - cos(radian)*nCenterX + sin(radian)*nCenterY);
-			xNewForm.eDy = (float)(nCenterY - cos(radian)*nCenterY - sin(radian)*nCenterX);
-			SetWorldTransform(dc, &xNewForm);
-
-			CPen SnakeTongue(PS_SOLID, 2, RGB(255, 128, 128));
-			CBrush SnakeHeadBrush(RGB(0, 128, 128));
-			CBrush SnakeEye(RGB(0, 0, 0));
-			CBrush SnakeEye2(RGB(255, 255, 255));
-			CPen EyeBrow(PS_SOLID, 2, RGB(0, 0, 0));
-
-			//혀
-			dc.SelectObject(&SnakeTongue);
-			dc.MoveTo(nCenterX + 3, nHTop + 3);
-			dc.LineTo(nCenterX - 3, nHTop - 3);
-			dc.LineTo(nCenterX + 3, nHTop - 5);
-			dc.LineTo(nCenterX - 3, nHTop - 7);
-			dc.SelectObject(&BGPen);
-
-			//머리
-			dc.SelectObject(&SnakeHeadBrush);
-			dc.Ellipse(nHLeft, nHTop, nHRight, nHBottom);
-
-			//눈s
-			CPoint LeftEyePoint(nCenterX - (nSize / 4), nCenterY - (nSize / 4) + 2);
-			CPoint RightEyePoint(nCenterX + (nSize / 4), nCenterY - (nSize / 4) + 2);
-
-			dc.SelectObject(&EyeBrow);
-			dc.MoveTo(LeftEyePoint.x - 5, LeftEyePoint.y + 11);
-			dc.LineTo(LeftEyePoint.x + 5, LeftEyePoint.y + 8);
-			dc.MoveTo(RightEyePoint.x - 5, RightEyePoint.y + 8);
-			dc.LineTo(RightEyePoint.x + 5, RightEyePoint.y + 11);
-			dc.SelectObject(&BGPen);
-
-			dc.SelectObject(&SnakeEye2);
-			dc.Ellipse(LeftEyePoint.x - 5, LeftEyePoint.y - 5, LeftEyePoint.x + 5, LeftEyePoint.y + 5);
-			dc.Ellipse(RightEyePoint.x - 5, RightEyePoint.y - 5, RightEyePoint.x + 5, RightEyePoint.y + 5);
-
-			dc.SelectObject(&SnakeEye);
-			dc.Ellipse(LeftEyePoint.x - 4, LeftEyePoint.y - 4, LeftEyePoint.x + 4, LeftEyePoint.y + 4);
-			dc.Ellipse(RightEyePoint.x - 4, RightEyePoint.y - 4, RightEyePoint.x + 4, RightEyePoint.y + 4);
-
-			//코
-			CPoint LeftNosePoint(nCenterX - 2, nCenterY - (nSize / 3));
-			CPoint RightNosePoint(nCenterX + 2, nCenterY - (nSize / 3));
-			dc.Rectangle(LeftNosePoint.x - 1, LeftNosePoint.y - 1, LeftNosePoint.x + 1, LeftNosePoint.y + 1);
-			dc.Rectangle(RightNosePoint.x - 1, RightNosePoint.y - 1, RightNosePoint.x + 1, RightNosePoint.y + 1);
-
-			dc.SelectObject(&BGBrush);
-			SetWorldTransform(dc, &xOldForm);
-			SetGraphicsMode(dc, GM_COMPATIBLE);
-#else
 			Gdiplus::Matrix oldMatrix;
 			memDC.GetTransform(&oldMatrix);
 
@@ -519,7 +409,6 @@ void CSnakeGameDlg::OnPaint()
 				memDC.FillEllipse(&GDIBrush_Eye2, RightEyePoint.x - 4, RightEyePoint.y - 4, 8, 8);
 			}
 			memDC.SetTransform(&oldMatrix);
-#endif//NOT_USE_GDIPLUS
 		}
 	}
 
