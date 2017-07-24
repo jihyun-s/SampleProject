@@ -464,6 +464,11 @@ void CSnakeGameDlg::OnPaint()
 		m_bf.SourceConstantAlpha = 255;
 		m_bf.AlphaFormat = AC_SRC_ALPHA;
 		AlphaBlend(dc, 30, 30, r.Width()-30, r.Height()-30, MemoryDC, 0, 0, bm.bmWidth, bm.bmHeight, m_bf);
+
+		DeleteObject(bitmap);
+		DeleteDC(MemoryDC);
+
+		delete boomImg;
 	}
 
 
