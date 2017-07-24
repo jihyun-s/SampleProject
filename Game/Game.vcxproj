@@ -139,7 +139,10 @@
     <None Include="res\Game.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\bitmap1.bmp" />
     <Image Include="res\Game.ico" />
+    <Image Include="Snake\Boom.png" />
+    <Image Include="Snake\Boom_BLK.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

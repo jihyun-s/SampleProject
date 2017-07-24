@@ -263,8 +263,6 @@ void CSnakeGameDlg::OnPaint()
 			pNewGrass[j] = pGrass[j] + pGrassPos[i];
 		memDC.FillPolygon(&GDIBrush_Grass, pNewGrass, 7);
 	}
-		
-	
 
 	int nSize = (r.right - r.left) / 10;
 
@@ -443,6 +441,32 @@ void CSnakeGameDlg::OnPaint()
 
 	// 완성된 bitmap은 한번에 화면에 그린다.
 	graphics->DrawImage(&bitmap, r.left, r.top);
+
+	if (pSnakeGame && pSnakeGame->IsSnakeGameOver())
+	{
+		//#21 게임 종료 시 뱀 폭발 렌더링
+		Sleep(500);
+		CImage image;
+		CPngImage* boomImg = new CPngImage();
+		boomImg->Load(IDB_BOOM);
+		CBitmap bitmap;
+		bitmap.Attach(boomImg->Detach());
+		BITMAP bm;
+		bitmap.GetObject(sizeof(BITMAP), &bm);
+
+		CDC MemoryDC;
+		MemoryDC.CreateCompatibleDC(&dc);
+		MemoryDC.SelectObject(&bitmap);
+
+		BLENDFUNCTION m_bf;
+		m_bf.BlendOp = AC_SRC_OVER;
+		m_bf.BlendFlags = 0;
+		m_bf.SourceConstantAlpha = 255;
+		m_bf.AlphaFormat = AC_SRC_ALPHA;
+		AlphaBlend(dc, 30, 30, r.Width()-30, r.Height()-30, MemoryDC, 0, 0, bm.bmWidth, bm.bmHeight, m_bf);
+	}
+
+
 }
 
 void CSnakeGameDlg::UpdateUI()
