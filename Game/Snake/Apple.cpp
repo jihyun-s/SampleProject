@@ -1,4 +1,5 @@
 #include "Apple.h"
+#include <time.h>
 
 Apple::Apple() : eColor(NONECOLOR), sApplePosition(-1,-1)
 {
@@ -10,6 +11,8 @@ Apple::~Apple()
 
 Point Apple::RandomXY(int MAX_X, int MAX_Y)
 {
+	srand((unsigned)time(NULL));
+
 	int nX = rand() % (MAX_X); // 0 ~ MAX-1 사이의 난수 생성
 	int nY = rand() % (MAX_Y);
 
