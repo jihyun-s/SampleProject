@@ -21,6 +21,7 @@ CSnakeGameDlg::CSnakeGameDlg(CWnd* pParent /*=NULL*/)
 : CDialogEx(CSnakeGameDlg::IDD, pParent)
 {
 	pSnakeGame = NULL;
+	m_pSnakeGameResultDlg = NULL;
 	m_bInit = FALSE;
 
 	GdiplusStartupInput gdiplusStartupInput;
@@ -31,6 +32,8 @@ CSnakeGameDlg::~CSnakeGameDlg()
 {
 	if (pSnakeGame)
 		delete pSnakeGame;
+	if (m_pSnakeGameResultDlg)
+		delete m_pSnakeGameResultDlg;
 
 	GdiplusShutdown(gdiplusToken);
 }
@@ -177,6 +180,12 @@ void CSnakeGameDlg::OnTimer(UINT nIDEvent)
 
 void CSnakeGameDlg::OnBnClickedBtnStart()
 {
+	CleanGameData();
+	StartGame();
+}
+
+void CSnakeGameDlg::CleanGameData()
+{
 	TraceListbox(L"[%d][DLG] Snake Game 시작", __LINE__);
 	TraceListbox(L"[%d][DLG] Snake Game 타이머 종료", __LINE__);
 	KillTimer(SNAKE_GAME_TIMER);
@@ -187,7 +196,11 @@ void CSnakeGameDlg::OnBnClickedBtnStart()
 		delete pSnakeGame;
 		pSnakeGame = NULL;
 	}
-	
+	m_bInit = FALSE;
+}
+
+void CSnakeGameDlg::StartGame()
+{
 #ifdef _DEBUG
 	pSnakeGame = new SnakeGame(this, GetDlgItem(IDC_LIST_SNAKE));
 #else
@@ -196,11 +209,9 @@ void CSnakeGameDlg::OnBnClickedBtnStart()
 	Invalidate();
 
 	// Snake game start
-	m_bInit = FALSE;
 	SetTimer(SNAKE_GAME_TIMER, SNAKE_GAME_MOVE_PERIOD, NULL); // timer 
 	TraceListbox(L"[%d][DLG] Snake Game 타이머 생성", __LINE__);
 }
-
 
 void CSnakeGameDlg::OnBnClickedExit()
 {
@@ -469,6 +480,8 @@ void CSnakeGameDlg::OnPaint()
 		DeleteDC(MemoryDC);
 
 		delete boomImg;
+
+		ShowResultDialog();
 	}
 
 
@@ -494,4 +507,26 @@ BOOL CSnakeGameDlg::OnEraseBkgnd(CDC* pDC)
 		return FALSE;
 
 	return __super::OnEraseBkgnd(pDC);
+}
+
+void CSnakeGameDlg::ShowResultDialog()
+{
+	if (!m_pSnakeGameResultDlg)
+		m_pSnakeGameResultDlg = new CSnakeGameResultDlg(this);
+	
+	assert(m_pSnakeGameResultDlg);
+
+	if (m_pSnakeGameResultDlg)
+	{
+		m_pSnakeGameResultDlg->SetScore(GetDlgItemInt(IDC_EDIT1));
+
+		if (IDOK == m_pSnakeGameResultDlg->DoModal()) {
+
+			if (m_pSnakeGameResultDlg->IsRestartGame())
+			{
+				CleanGameData();
+				StartGame();
+			}
+		}
+	}
 }
